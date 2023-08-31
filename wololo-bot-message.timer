@@ -1,0 +1,11 @@
+[Unit]
+Description=wololo-bot-message
+
+[Timer]
+OnBootSec=0min
+OnCalendar=00/10:00
+Unit=wololo-bot-message.service
+Persistent=true
+
+[Install]
+WantedBy=timers.target
