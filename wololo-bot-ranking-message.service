@@ -1,0 +1,5 @@
+[Unit]
+Description=Wololo bot ranking message
+
+[Service]
+ExecStart=/home/ubuntu/wololo-bot/venv/bin/python /home/ubuntu/wololo-bot/wololo-bot-ranking-message.py
