@@ -81,11 +81,11 @@ class MyClient(discord.Client):
                 resp = requests.get(url=p.url_relic)
                 data = resp.json()
                 for i in range(0, len(data['leaderboardStats'])):
-                    if int(data['leaderboardStats'][i]['leaderboard_id']) == 3: # RM
+                    if int(data['leaderboardStats'][i]['leaderboard_id']) == 3:  # RM
                         new_rm_elo = int(data['leaderboardStats'][i]['rating'])
                         p.new_rm_elo = new_rm_elo
-                    elif int(data['leaderboardStats'][i]['leaderboard_id']) == 4: # TG
-                        new_tg_elo = int(data['leaderboardStats'][1]['rating'])
+                    elif int(data['leaderboardStats'][i]['leaderboard_id']) == 4:  # TG
+                        new_tg_elo = int(data['leaderboardStats'][i]['rating'])
                         p.new_tg_elo = new_tg_elo
 
                 # TODO get max ELO
