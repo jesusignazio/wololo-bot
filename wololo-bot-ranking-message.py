@@ -11,6 +11,7 @@ intents.message_content = True
 
 list_players = []
 
+
 class PlayerWatched:
     def __init__(self, profile_id, discord_id, discord_name, last_rm_elo, new_rm_elo, last_tg_elo, new_tg_elo, steam_id):
         self.profile_id = profile_id
@@ -76,18 +77,21 @@ class MyClient(discord.Client):
         for p in list_players:
             try:
                 print("Getting " + p.discord_name)
-                """RM elo"""
+
                 resp = requests.get(url=p.url_relic)
                 data = resp.json()
-                new_rm_elo = int(data['leaderboardStats'][0]['rating'])
-                p.new_rm_elo = new_rm_elo
-                """TG elo"""
-                new_tg_elo = int(data['leaderboardStats'][1]['rating'])
-                p.new_tg_elo = new_tg_elo
+                for i in range(0, len(data['leaderboardStats'])):
+                    if int(data['leaderboardStats'][i]['leaderboard_id']) == 3: # RM
+                        new_rm_elo = int(data['leaderboardStats'][i]['rating'])
+                        p.new_rm_elo = new_rm_elo
+                    elif int(data['leaderboardStats'][i]['leaderboard_id']) == 4: # TG
+                        new_tg_elo = int(data['leaderboardStats'][1]['rating'])
+                        p.new_tg_elo = new_tg_elo
 
-                #TODO get max ELO
+                # TODO get max ELO
 
             except Exception as e:
+                print(e)
                 p.new_rm_elo = p.last_rm_elo
                 p.new_tg_elo = p.last_tg_elo
 
