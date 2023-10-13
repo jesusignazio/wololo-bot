@@ -12,7 +12,7 @@ intents.message_content = True
 list_players = []
 
 class PlayerWatched:
-    def __init__(self, profile_id, discord_id, discord_name, last_rm_elo, new_rm_elo, last_tg_elo, new_tg_elo):
+    def __init__(self, profile_id, discord_id, discord_name, last_rm_elo, new_rm_elo, last_tg_elo, new_tg_elo, steam_id):
         self.profile_id = profile_id
         self.discord_id = discord_id
         self.discord_name = discord_name
@@ -23,7 +23,9 @@ class PlayerWatched:
         self.last_tg_elo = last_tg_elo
         self.new_tg_elo = new_tg_elo
         self.max_tg_elo = ""
+        self.steam_id = steam_id
 
+        self.url_relic = "https://aoe-api.reliclink.com/community/leaderboard/GetPersonalStat?title=age2&profile_names=[%22/steam/" + str(steam_id) + "%22]"
         self.url_rm = "https://aoe2.net/api/player/ratinghistory?game=aoe2de&leaderboard_id=3&profile_id=" + str(profile_id) + "&count=1"
         self.url_tg = "https://aoe2.net/api/player/ratinghistory?game=aoe2de&leaderboard_id=4&profile_id=" + str(profile_id) + "&count=1"
 
@@ -38,6 +40,7 @@ class PlayerWatched:
                 return " (+" + str(diff) + ") "
             else:
                 return ""
+
     def get_tg_elo_diff(self):
         if self.last_tg_elo == 0:
             return ""
@@ -50,8 +53,8 @@ class PlayerWatched:
             else:
                 return ""
 
-class MyClient(discord.Client):
 
+class MyClient(discord.Client):
     async def on_ready(self):
         print("Running")
         with open(os.path.realpath(os.path.dirname(__file__)) + "/watched.txt") as f:
@@ -64,28 +67,29 @@ class MyClient(discord.Client):
                 discord_name = words[2]
                 last_elo = int(words[3])
                 last_tg_elo = int(words[4])
+                steam_id = int(words[5])
                 new_rm_elo = None
                 new_tg_elo = None
-                player_watched = PlayerWatched(profile_id, discord_id, discord_name, last_elo, new_rm_elo, last_tg_elo, new_tg_elo)
+                player_watched = PlayerWatched(profile_id, discord_id, discord_name, last_elo, new_rm_elo, last_tg_elo, new_tg_elo, steam_id)
                 list_players.append(player_watched)
 
         for p in list_players:
             try:
                 print("Getting " + p.discord_name)
                 """RM elo"""
-                resp = requests.get(url=p.url_rm)
+                resp = requests.get(url=p.url_relic)
                 data = resp.json()
-                new_rm_elo = int(data[0]['rating'])
-                p.new_rm_elo = int(new_rm_elo)
+                new_rm_elo = int(data['leaderboardStats'][0]['rating'])
+                p.new_rm_elo = new_rm_elo
                 """TG elo"""
-                resp = requests.get(url=p.url_tg)
-                data = resp.json()
-                new_tg_elo = int(data[0]['rating'])
-                p.new_tg_elo = int(new_tg_elo)
+                new_tg_elo = int(data['leaderboardStats'][1]['rating'])
+                p.new_tg_elo = new_tg_elo
+
                 #TODO get max ELO
 
             except Exception as e:
-                continue
+                p.new_rm_elo = p.last_rm_elo
+                p.new_tg_elo = p.last_tg_elo
 
             time.sleep(1)
 
@@ -148,8 +152,9 @@ class MyClient(discord.Client):
         """Save new content to watched.txt"""
         for p in list_players:
             with open(os.path.realpath(os.path.dirname(__file__)) + "/watched.txt", 'a') as f:
-                f.write(p.profile_id + "&&&" + p.discord_id + "&&&" + p.discord_name + "&&&" + str(p.new_rm_elo) + "&&&" + str(p.new_tg_elo) + "\n")
+                f.write(p.profile_id + "&&&" + p.discord_id + "&&&" + p.discord_name + "&&&" + str(p.new_rm_elo) + "&&&" + str(p.new_tg_elo) + "&&&" +  str(p.steam_id) + "\n")
         exit()
+
 
 bot = MyClient(intents=intents)
 bot.run(TOKEN)
