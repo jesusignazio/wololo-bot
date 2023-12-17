@@ -333,7 +333,7 @@ class MyClient(discord.Client):
                             except Exception as e:
                                 print(e)
 
-                            time.sleep(3)
+                            time.sleep(60)
                         else:
                             print("Already reported: " + match_id)
                             break
