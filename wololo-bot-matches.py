@@ -327,7 +327,7 @@ class MyClient(discord.Client):
                                 embed_rm.add_field(name="Equipo 1", value=team_1)
                                 embed_rm.add_field(name="Equipo 2", value=team_2)
                                 await channel_to.send(embed=embed_rm)
-                                with open("matches.txt", "a") as file:
+                                with open(os.path.realpath(os.path.dirname(__file__)) + "/matches.txt", 'a') as file:
                                     file.write(str(match.match_id) + "\n")
                                 matches_reported.append(match.match_id)
                             except Exception as e:
