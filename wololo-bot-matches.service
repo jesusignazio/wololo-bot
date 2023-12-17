@@ -3,3 +3,6 @@ Description=Wololo bot matches
 
 [Service]
 ExecStart=/home/ubuntu/wololo-bot/venv/bin/python /home/ubuntu/wololo-bot/wololo-bot-matches.py
+
+[Install]
+WantedBy=multi-user.target
