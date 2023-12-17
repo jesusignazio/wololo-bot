@@ -1,4 +1,4 @@
-#!/home/ubuntu/wololo-bot/venv/bin/python3
+#!/home/jesusignacio/Proyectos/wololo-bot/venv/bin/python
 # -*- coding: utf-8 -*-
 import re
 import sys
