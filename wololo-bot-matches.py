@@ -274,10 +274,6 @@ class MyClient(discord.Client):
                                     # Getting color
                                     style = p1.get_attribute("style")
                                     player_color = get_color(style)
-                                    profile_id = 0
-                                    player_name = p1_stats[1]
-                                    new_elo = p1_stats[2]
-                                    civ = p1_stats[0]
 
                                     if len(p1_stats) < 4:
                                         result = "none"
@@ -304,14 +300,14 @@ class MyClient(discord.Client):
                                         result = "none"
                                         elo_change = 0
                                     else:
-                                        elo_change = p2_stats[3]
-                                        if "↓" in p2_stats[3]:
+                                        elo_change = p2_stats[0]
+                                        if "↓" in p2_stats[0]:
                                             result = "lose"
                                         else:
                                             result = "win"
 
-                                    player2 = Player(0, p2_stats[1], p2_stats[2], elo_change, result, player_color, 1,
-                                                     p2_stats[0])
+                                    player2 = Player(0, p2_stats[2], p2_stats[1], elo_change, result, player_color, 1,
+                                                     p2_stats[3])
                                     match.players.append(player2)
                                 if not FLAG_SPECTATE:
                                     print()
