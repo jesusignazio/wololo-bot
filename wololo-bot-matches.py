@@ -8,11 +8,11 @@ from selenium.webdriver.firefox.options import Options
 from selenium.webdriver.firefox.service import Service
 
 TOKEN = 'MTE0NjExMDE2MDcyNTYyMjg0NQ.Gz4VjC.-VMX53nHhI6deUQl5QjpT5vtQ-dn4bDn-bVRG4'
-# CHANNEL_ID = 1185690467501887598
-CHANNEL_ID = 974341698643689534
+CHANNEL_ID = 1185690467501887598
+# CHANNEL_ID = 974341698643689534
 
-# SPECTATE_ID = 1186267701996433458
-SPECTATE_ID = 974341698643689534
+SPECTATE_ID = 1186267701996433458
+# SPECTATE_ID = 974341698643689534
 
 intents = discord.Intents.default()
 intents.message_content = True
