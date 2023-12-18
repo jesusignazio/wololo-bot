@@ -1,14 +1,18 @@
 import time
 import discord
 import os
+import sys
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.firefox.options import Options
 from selenium.webdriver.firefox.service import Service
 
 TOKEN = 'MTE0NjExMDE2MDcyNTYyMjg0NQ.Gz4VjC.-VMX53nHhI6deUQl5QjpT5vtQ-dn4bDn-bVRG4'
-CHANNEL_ID = 1185690467501887598
-# CHANNEL_ID = 974341698643689534
+# CHANNEL_ID = 1185690467501887598
+CHANNEL_ID = 974341698643689534
+
+# SPECTATE_ID = 1186267701996433458
+SPECTATE_ID = 974341698643689534
 
 intents = discord.Intents.default()
 intents.message_content = True
@@ -30,15 +34,18 @@ class Player:
         self.profile_id = profile_id
         self.player_name = player_name
         self.new_elo = new_elo
-        if "↑" in elo_change:
-            factor = "+"
+        if elo_change == 0:
+            self.elo_change = ""
         else:
-            factor = "-"
-        elo_change = str(elo_change.replace("\u2009", ""))
-        elo_change = str(elo_change.replace(" ", ""))
-        elo_change = str(elo_change.replace("↑", ""))
-        elo_change = str(elo_change.replace("↓", ""))
-        self.elo_change = factor + elo_change
+            if "↑" in elo_change:
+                factor = "+"
+            else:
+                factor = "-"
+            elo_change = str(elo_change.replace("\u2009", ""))
+            elo_change = str(elo_change.replace(" ", ""))
+            elo_change = str(elo_change.replace("↑", ""))
+            elo_change = str(elo_change.replace("↓", ""))
+            self.elo_change = factor + elo_change
         self.result = result
         self.color = color
         self.team = team
@@ -128,7 +135,7 @@ class Player:
             self.civ = "Teutones"
         elif civ == "Turks":
             self.civ = "Turcos"
-        elif civ == "Vietnameses":
+        elif civ == "Vietnamese":
             self.civ = "Vietnamitas"
         elif civ == "Vikings":
             self.civ = "Vikingos"
@@ -189,6 +196,7 @@ class MyClient(discord.Client):
         while True:
             print("New loop")
             matches_reported = []
+            matches_started = []
             with open(os.path.realpath(os.path.dirname(__file__)) + "/watched.txt") as f:
                 lines = f.readlines()
                 for line in lines:
@@ -211,6 +219,10 @@ class MyClient(discord.Client):
                 lines = f.readlines()
                 for line in lines:
                     matches_reported.append(line.replace("\n", ""))
+            with open(os.path.realpath(os.path.dirname(__file__)) + "/matches-started.txt") as f:
+                lines = f.readlines()
+                for line in lines:
+                    matches_started.append(line.replace("\n", ""))
 
             for p in list_players:
                 try:
@@ -229,7 +241,7 @@ class MyClient(discord.Client):
                                 By.TAG_NAME, "div")[0].text
                         print()
                         print(match_id)
-                        if match_id not in matches_reported:
+                        if match_id not in matches_reported and match_id not in matches_started:
                             print("Not reported: " + match_id)
 
                             map_name = \
@@ -255,90 +267,158 @@ class MyClient(discord.Client):
                                 By.XPATH, "./*")[1].find_elements(By.XPATH, "./*")[0].find_elements(By.XPATH, "./*")
 
                             try:
+                                FLAG_SPECTATE = False
                                 for p1 in players_team_1:
                                     p1_stats = p1.text.split("\n")
-                                    if "↓" in p1_stats[3]:
-                                        result = "lose"
-                                    else:
-                                        result = "win"
+
                                     # Getting color
                                     style = p1.get_attribute("style")
                                     player_color = get_color(style)
+                                    profile_id = 0
+                                    player_name = p1_stats[1]
+                                    new_elo = p1_stats[2]
+                                    civ = p1_stats[0]
 
-                                    player1 = Player(0, p1_stats[1], p1_stats[2], p1_stats[3], result, player_color, 1,
+                                    if len(p1_stats) < 4:
+                                        result = "none"
+                                        FLAG_SPECTATE = True
+                                        elo_change = 0
+                                    else:
+                                        elo_change = p1_stats[3]
+                                        if "↓" in p1_stats[3]:
+                                            result = "lose"
+                                        else:
+                                            result = "win"
+
+                                    player1 = Player(0, p1_stats[1], p1_stats[2], elo_change, result, player_color, 1,
                                                      p1_stats[0])
                                     match.players.append(player1)
 
                                 for p2 in players_team_2:
                                     p2_stats = p2.text.split("\n")
-                                    if "↓" in p2_stats[0]:
-                                        result = "lose"
-                                    else:
-                                        result = "win"
+
                                     # Getting color
                                     style = p2.get_attribute("style")
                                     player_color = get_color(style)
-                                    player2 = Player(0, p2_stats[2], p2_stats[1], p2_stats[0], result, player_color, 2,
-                                                     p2_stats[3])
-                                    match.players.append(player2)
-
-                                print()
-                                print("Notify")
-                                print()
-                                print(match.match_id)
-                                print(match.match_type)
-                                print(match.mapname)
-                                print(match.image_map)
-                                print(match.completiontime)
-                                print()
-                                message_rm = match.match_type + "\n\n"
-                                message_rm = message_rm + match.completiontime
-                                int_i = 0
-                                team_1 = "```"
-                                team_2 = "```"
-                                for player in match.players:
-                                    if int_i >= len(match.players) / 2:
-                                        team_2 = team_2 + str(
-                                            player.new_elo + " " + player.elo_change + " " + player.color + player.player_name + " (" + player.civ + ")")
-                                        if player.result == "win":
-                                            team_2 = team_2 + "🏆"
-                                        else:
-                                            team_2 = team_2 + "💀"
-                                        team_2 = team_2 + "\n"
+                                    if len(p2_stats) < 4:
+                                        result = "none"
+                                        elo_change = 0
                                     else:
-                                        team_1 = team_1 + str(
-                                            player.new_elo + " " + player.elo_change + " " + player.color + player.player_name + " (" + player.civ + ")")
-                                        if player.result == "win":
-                                            team_1 = team_1 + "🏆"
+                                        elo_change = p2_stats[3]
+                                        if "↓" in p2_stats[3]:
+                                            result = "lose"
                                         else:
-                                            team_1 = team_1 + "💀"
-                                        team_1 = team_1 + "\n"
-                                    int_i = int_i + 1
+                                            result = "win"
 
-                                team_1 = team_1 + "```"
-                                team_2 = team_2 + "```"
-                                message_footer = "https://www.aoe2insights.com/match/" + match.match_id + "/"
-                                print("Sending message discord")
-                                channel_to = await bot.fetch_channel(CHANNEL_ID)
-                                embed_rm = discord.Embed(title=match.mapname, url=message_footer, description=message_rm, color=0x992d22)
-                                embed_rm.set_thumbnail(
-                                    url=match.image_map)
-                                # embed_rm.set_footer(text=message_footer)
-                                embed_rm.add_field(name="Equipo 1", value=team_1)
-                                embed_rm.add_field(name="Equipo 2", value=team_2)
-                                await channel_to.send(embed=embed_rm)
-                                with open(os.path.realpath(os.path.dirname(__file__)) + "/matches.txt", 'a') as file:
-                                    file.write(str(match.match_id) + "\n")
-                                matches_reported.append(match.match_id)
+                                    player2 = Player(0, p2_stats[1], p2_stats[2], elo_change, result, player_color, 1,
+                                                     p2_stats[0])
+                                    match.players.append(player2)
+                                if not FLAG_SPECTATE:
+                                    print()
+                                    print("Notify game finished")
+                                    print()
+                                    print(match.match_id)
+                                    print(match.match_type)
+                                    print(match.mapname)
+                                    print(match.image_map)
+                                    print(match.completiontime)
+                                    print()
+                                    message_rm = match.match_type + "\n"
+                                    message_rm = message_rm + match.completiontime + "\n"
+                                    int_i = 0
+                                    team_1 = "```"
+                                    team_2 = "```"
+                                    for player in match.players:
+                                        if int_i >= len(match.players) / 2:
+                                            team_2 = team_2 + str(
+                                                player.new_elo + " " + player.elo_change + " " + player.color + player.player_name + " (" + player.civ + ")")
+                                            if player.result == "win":
+                                                team_2 = team_2 + "🏆"
+                                            else:
+                                                team_2 = team_2 + "💀"
+                                            team_2 = team_2 + "\n"
+                                        else:
+                                            team_1 = team_1 + str(
+                                                player.new_elo + " " + player.elo_change + " " + player.color + player.player_name + " (" + player.civ + ")")
+                                            if player.result == "win":
+                                                team_1 = team_1 + "🏆"
+                                            else:
+                                                team_1 = team_1 + "💀"
+                                            team_1 = team_1 + "\n"
+                                        int_i = int_i + 1
+
+                                    team_1 = team_1 + "```"
+                                    team_2 = team_2 + "```"
+                                    message_footer = "https://www.aoe2insights.com/match/" + match.match_id + "/"
+                                    print("Sending message discord")
+                                    channel_to = await bot.fetch_channel(CHANNEL_ID)
+                                    embed_rm = discord.Embed(title=match.mapname, url=message_footer, description=message_rm, color=0x992d22)
+                                    embed_rm.set_thumbnail(
+                                        url=match.image_map)
+                                    # embed_rm.set_footer(text=message_footer)
+                                    embed_rm.add_field(name="Equipo 1", value=team_1)
+                                    embed_rm.add_field(name="Equipo 2", value=team_2)
+                                    await channel_to.send(embed=embed_rm)
+                                    with open(os.path.realpath(os.path.dirname(__file__)) + "/matches.txt", 'a') as file:
+                                        file.write(str(match.match_id) + "\n")
+                                    matches_reported.append(match.match_id)
+                                else:
+                                    print()
+                                    print("Notify game started to spectate")
+                                    print()
+                                    print(match.match_id)
+                                    print(match.match_type)
+                                    print(match.mapname)
+                                    print(match.image_map)
+                                    print(match.completiontime)
+                                    print()
+
+                                    spectate_link = "<aoe2de://0/" + match.match_id + ">"
+                                    message_rm = match.match_type + "\n"
+                                    message_rm = message_rm + match.completiontime + "\n\n"
+                                    message_rm = message_rm + spectate_link + "\n"
+
+                                    int_i = 0
+                                    team_1 = "```"
+                                    team_2 = "```"
+                                    for player in match.players:
+                                        if int_i >= len(match.players) / 2:
+                                            team_2 = team_2 + str(
+                                                player.new_elo + " " + player.elo_change + " " + player.color + player.player_name + " (" + player.civ + ")")
+                                            team_2 = team_2 + "\n"
+                                        else:
+                                            team_1 = team_1 + str(
+                                                player.new_elo + " " + player.elo_change + " " + player.color + player.player_name + " (" + player.civ + ")")
+                                            team_1 = team_1 + "\n"
+                                        int_i = int_i + 1
+
+                                    team_1 = team_1 + "```"
+                                    team_2 = team_2 + "```"
+                                    print("Sending message discord")
+                                    channel_to = await bot.fetch_channel(SPECTATE_ID)
+
+                                    embed_rm = discord.Embed(title=match.mapname,
+                                                             description=message_rm, color=0x992d22)
+                                    embed_rm.set_thumbnail(
+                                        url=match.image_map)
+                                    # embed_rm.set_footer(text=message_footer)
+                                    embed_rm.add_field(name="Equipo 1", value=team_1)
+                                    embed_rm.add_field(name="Equipo 2", value=team_2)
+                                    await channel_to.send(embed=embed_rm)
+                                    with open(os.path.realpath(os.path.dirname(__file__)) + "/matches-started.txt",
+                                              'a') as file:
+                                        file.write(str(match.match_id) + "\n")
+                                    matches_started.append(match.match_id)
                             except Exception as e:
                                 print(e)
+                                print('Error on line {}'.format(sys.exc_info()[-1].tb_lineno), type(e).__name__, e)
 
-                            time.sleep(60)
                         else:
                             print("Already reported: " + match_id)
                             break
                 except Exception as e:
                     print(e)
+            time.sleep(60)
 
 
 bot = MyClient(intents=intents)
