@@ -246,7 +246,7 @@ class MyClient(discord.Client):
                                 By.TAG_NAME, "div")[0].text
                         print()
                         print(match_id)
-                        if match_id not in matches_reported and match_id not in matches_started:
+                        if match_id not in matches_reported:
                             print("Not reported: " + match_id)
 
                             map_name = \
@@ -281,6 +281,8 @@ class MyClient(discord.Client):
                                     player_color = get_color(style)
 
                                     if len(p1_stats) < 4:
+                                        if match_id in matches_started:
+                                            break
                                         result = "none"
                                         FLAG_SPECTATE = True
                                         elo_change = 0
@@ -319,8 +321,6 @@ class MyClient(discord.Client):
                                                          player_color, 1,
                                                          p2_stats[3])
                                         match.players.append(player2)
-
-
 
                                 if not FLAG_SPECTATE:
                                     print()
