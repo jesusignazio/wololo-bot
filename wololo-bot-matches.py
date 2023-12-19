@@ -422,7 +422,7 @@ class MyClient(discord.Client):
                             break
                 except Exception as e:
                     print(e)
-            time.sleep(60)
+            time.sleep(30)
 
 
 bot = MyClient(intents=intents)
