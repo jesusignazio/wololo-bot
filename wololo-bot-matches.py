@@ -377,10 +377,10 @@ class MyClient(discord.Client):
                                     print(match.completiontime)
                                     print()
 
-                                    spectate_link = "<aoe2de://0/" + match.match_id + ">"
-                                    message_rm = match.match_type + "\n"
+                                    spectate_link = match.match_id
+                                    message_rm = match.mapname + "\n\n" + match.match_type + "\n"
                                     message_rm = message_rm + match.completiontime + "\n\n"
-                                    message_rm = message_rm + spectate_link + "\n"
+                                    # message_rm = message_rm + spectate_link + "\n"
 
                                     int_i = 0
                                     team_1 = "```"
@@ -401,7 +401,7 @@ class MyClient(discord.Client):
                                     print("Sending message discord")
                                     channel_to = await bot.fetch_channel(SPECTATE_ID)
 
-                                    embed_rm = discord.Embed(title=match.mapname,
+                                    embed_rm = discord.Embed(title=spectate_link,
                                                              description=message_rm, color=0x992d22)
                                     embed_rm.set_thumbnail(
                                         url=match.image_map)
