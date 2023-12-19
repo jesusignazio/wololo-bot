@@ -20,6 +20,11 @@ intents.message_content = True
 list_players = []
 
 
+class Buttons(discord.ui.View):
+    def __init__(self, *, timeout=180):
+        super().__init__(timeout=timeout)
+
+
 class PlayerWatched:
     def __init__(self, profile_id, discord_id, discord_name, last_rm_elo, new_rm_elo, last_tg_elo, new_tg_elo, steam_id):
         self.profile_id = profile_id
@@ -377,10 +382,10 @@ class MyClient(discord.Client):
                                     print(match.completiontime)
                                     print()
 
-                                    spectate_link = match.match_id
-                                    message_rm = match.mapname + "\n\n" + match.match_type + "\n"
-                                    message_rm = message_rm + match.completiontime + "\n\n"
-                                    # message_rm = message_rm + spectate_link + "\n"
+                                    spectate_link = "https://aoe2lobby.com/w/" + match.match_id
+
+                                    message_rm = match.match_type + "\n"
+                                    message_rm = message_rm + match.completiontime
 
                                     int_i = 0
                                     team_1 = "```"
@@ -401,14 +406,19 @@ class MyClient(discord.Client):
                                     print("Sending message discord")
                                     channel_to = await bot.fetch_channel(SPECTATE_ID)
 
-                                    embed_rm = discord.Embed(title=spectate_link,
+                                    view = Buttons()
+                                    view.add_item(
+                                        discord.ui.Button(label="Ver como espectador", style=discord.ButtonStyle.primary,
+                                                          url=spectate_link))
+
+                                    embed_rm = discord.Embed(title=match.mapname,
                                                              description=message_rm, color=0x992d22)
                                     embed_rm.set_thumbnail(
                                         url=match.image_map)
                                     # embed_rm.set_footer(text=message_footer)
                                     embed_rm.add_field(name="Equipo 1", value=team_1)
                                     embed_rm.add_field(name="Equipo 2", value=team_2)
-                                    await channel_to.send(embed=embed_rm)
+                                    await channel_to.send(embed=embed_rm, view=view)
                                     with open(os.path.realpath(os.path.dirname(__file__)) + "/matches-started.txt",
                                               'a') as file:
                                         file.write(str(match.match_id) + "\n")
