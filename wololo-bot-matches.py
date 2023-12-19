@@ -296,7 +296,6 @@ class MyClient(discord.Client):
                                     # Getting color
                                     style = p2.get_attribute("style")
                                     player_color = get_color(style)
-                                    print(p2_stats)
                                     if len(p2_stats) < 4:
                                         result = "none"
                                         elo_change = 0
