@@ -420,9 +420,9 @@ class MyClient(discord.Client):
                         else:
                             print("Already reported: " + match_id)
                             break
+                    time.sleep(10)
                 except Exception as e:
                     print(e)
-            time.sleep(30)
 
 
 bot = MyClient(intents=intents)
