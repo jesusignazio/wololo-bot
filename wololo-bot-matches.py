@@ -239,6 +239,9 @@ class MyClient(discord.Client):
                     match_watched = MatchWatchedHolder(match_id, discord_message_id)
                     matches_started.append(match_watched)
 
+            for m in matches_started:
+                print(m.__dict__)
+
             for p in list_players:
                 try:
                     FLAG_PUBLISH = True
