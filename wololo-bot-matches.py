@@ -239,9 +239,6 @@ class MyClient(discord.Client):
                     match_watched = MatchWatchedHolder(match_id, discord_message_id)
                     matches_started.append(match_watched)
 
-            for m in matches_started:
-                print(m.__dict__)
-
             for p in list_players:
                 try:
                     FLAG_PUBLISH = True
@@ -457,7 +454,8 @@ class MyClient(discord.Client):
                                     with open(os.path.realpath(os.path.dirname(__file__)) + "/matches-started.txt",
                                               'a') as file:
                                         file.write(str(match.match_id) + "&&&" + str(embed_sent.id) + "\n")
-                                    matches_started.append(match.match_id)
+                                    matched_started = MatchWatchedHolder(match.match_id, embed_sent.id)
+                                    matches_started.append(matched_started)
                             except Exception as e:
                                 print(e)
                                 print('Error on line {}'.format(sys.exc_info()[-1].tb_lineno), type(e).__name__, e)
