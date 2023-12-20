@@ -290,7 +290,7 @@ class MyClient(discord.Client):
                                     style = p1.get_attribute("style")
                                     player_color = get_color(style)
 
-                                    if len(p1_stats) < 4 and match_id in matches_started:
+                                    if len(p1_stats) < 4 and any(x.match_id == match_id for x in matches_started):
                                         print("match_id in matches_started and still playing")
                                         break
 
@@ -301,7 +301,7 @@ class MyClient(discord.Client):
                                         elo_change = 0
 
                                     else:
-                                        if match_id in matches_started:
+                                        if any(x.match_id == match_id for x in matches_started):
                                             print("match_id in matches_started and now is finished")
                                             # borrar match_started_holder de la lista y de matches-started.txt
                                             for m in matches_started:
