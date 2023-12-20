@@ -241,6 +241,7 @@ class MyClient(discord.Client):
 
             for p in list_players:
                 try:
+                    FLAG_PUBLISH = True
                     print()
                     print("Getting " + p.discord_name)
                     print(p.url_companion)
@@ -292,6 +293,7 @@ class MyClient(discord.Client):
 
                                     if len(p1_stats) < 4 and any(x.match_id == match_id for x in matches_started):
                                         print("match_id in matches_started and still playing")
+                                        FLAG_PUBLISH = False
                                         break
 
                                     elif len(p1_stats) < 4:
@@ -334,15 +336,14 @@ class MyClient(discord.Client):
                                     # Getting color
                                     style = p2.get_attribute("style")
                                     player_color = get_color(style)
-                                    print(p2_stats)
-                                    if len(p2_stats) < 4: # spectate
+                                    if len(p2_stats) < 4:  # spectate
                                         result = "none"
                                         elo_change = 0
                                         player2 = Player(0, p2_stats[1], p2_stats[0], elo_change, result, player_color,
                                                          1,
                                                          p2_stats[2])
                                         match.players.append(player2)
-                                    else: # game finished
+                                    else:  # game finished
                                         elo_change = p2_stats[0]
                                         if "↓" in p2_stats[0]:
                                             result = "lose"
@@ -353,7 +354,7 @@ class MyClient(discord.Client):
                                                          p2_stats[3])
                                         match.players.append(player2)
 
-                                if not FLAG_SPECTATE:
+                                if not FLAG_SPECTATE and not FLAG_PUBLISH:
                                     print()
                                     print("Notify game finished")
                                     print()
