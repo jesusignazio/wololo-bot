@@ -1,3 +1,4 @@
+import datetime
 import time
 import discord
 import os
@@ -25,8 +26,31 @@ class Buttons(discord.ui.View):
         super().__init__(timeout=timeout)
 
 
+class Match:
+    def __init__(self, match_id, mapname, completiontime, match_type, players, image_map):
+        self.match_id = match_id
+        self.mapname = mapname
+
+        self.match_type = match_type
+        self.players = players
+        self.image_map = image_map
+
+        time_parse_format = "%d/%m/%Y, %I:%M %p"
+        completiontime = completiontime.split("/")
+        completiontime = completiontime[1] + "/" + completiontime[0] + "/" + completiontime[2]
+        completiontime = datetime.datetime.strptime(completiontime, time_parse_format)
+        time_parse_format_output = "%d/%m/%Y, %H:%M"
+        self.completiontime = datetime.datetime.strftime(completiontime, time_parse_format_output)
+
+
+class MatchWatchedHolder:
+    def __init__(self, match_id, discord_message_id):
+        self.match_id = match_id
+        self.discord_message_id = discord_message_id
+
+
 class PlayerWatched:
-    def __init__(self, profile_id, discord_id, discord_name, last_rm_elo, new_rm_elo, last_tg_elo, new_tg_elo, steam_id):
+    def __init__(self, profile_id, discord_id, discord_name):
         self.profile_id = profile_id
         self.discord_id = discord_id
         self.discord_name = discord_name
@@ -177,18 +201,6 @@ def get_color(style):
         return ""
 
 
-class Match:
-    def __init__(self, match_id, mapname, completiontime, match_type, players, image_map):
-        self.match_id = match_id
-        self.mapname = mapname
-        completiontime = completiontime.split("/")
-        self.completiontime = completiontime[1] + "/" + completiontime[0] + "/" + completiontime[2]
-
-        self.match_type = match_type
-        self.players = players
-        self.image_map = image_map
-
-
 class MyClient(discord.Client):
     async def on_ready(self):
         print("Running")
@@ -210,14 +222,7 @@ class MyClient(discord.Client):
                     profile_id = words[0]
                     discord_id = words[1]
                     discord_name = words[2]
-                    last_elo = int(words[3])
-                    last_tg_elo = int(words[4])
-                    steam_id = int(words[5])
-                    new_rm_elo = None
-                    new_tg_elo = None
-                    player_watched = PlayerWatched(profile_id, discord_id, discord_name, last_elo, new_rm_elo,
-                                                   last_tg_elo,
-                                                   new_tg_elo, steam_id)
+                    player_watched = PlayerWatched(profile_id, discord_id, discord_name)
                     list_players.append(player_watched)
 
             with open(os.path.realpath(os.path.dirname(__file__)) + "/matches.txt") as f:
@@ -227,7 +232,12 @@ class MyClient(discord.Client):
             with open(os.path.realpath(os.path.dirname(__file__)) + "/matches-started.txt") as f:
                 lines = f.readlines()
                 for line in lines:
-                    matches_started.append(line.replace("\n", ""))
+                    line = line.replace("\n", "")
+                    words = line.split("&&&")
+                    match_id = words[0]
+                    discord_message_id = words[1]
+                    match_watched = MatchWatchedHolder(match_id, discord_message_id)
+                    matches_started.append(match_watched)
 
             for p in list_players:
                 try:
@@ -280,13 +290,34 @@ class MyClient(discord.Client):
                                     style = p1.get_attribute("style")
                                     player_color = get_color(style)
 
-                                    if len(p1_stats) < 4:
-                                        if match_id in matches_started:
-                                            break
+                                    if len(p1_stats) < 4 and match_id in matches_started:
+                                        print("match_id in matches_started and still playing")
+                                        break
+
+                                    elif len(p1_stats) < 4:
+                                        print("new match to spectate")
                                         result = "none"
                                         FLAG_SPECTATE = True
                                         elo_change = 0
+
                                     else:
+                                        if match_id in matches_started:
+                                            print("match_id in matches_started and now is finished")
+                                            # borrar match_started_holder de la lista y de matches-started.txt
+                                            for m in matches_started:
+                                                if m.match_id == match_id:
+                                                    # borrar mensaje de discord
+                                                    channel_to = await bot.fetch_channel(SPECTATE_ID)
+                                                    msg = await channel_to.fetch_message(m.discord_message_id)
+                                                    await msg.delete()
+                                                    matches_started.remove(m)
+                                                    with open(os.path.realpath(
+                                                            os.path.dirname(__file__)) + "/matches-started.txt",
+                                                              'a') as file:
+                                                        for n in matches_started:
+                                                            file.write(
+                                                                str(n.match_id) + "&&&" + str(n.discord_message_id) + "\n")
+                                                    break
                                         elo_change = p1_stats[3]
                                         if "↓" in p1_stats[3]:
                                             result = "lose"
@@ -411,17 +442,17 @@ class MyClient(discord.Client):
                                         discord.ui.Button(label="Ver como espectador", style=discord.ButtonStyle.primary,
                                                           url=spectate_link))
 
-                                    embed_rm = discord.Embed(title=match.mapname,
+                                    embed_rm = discord.Embed(title=match.mapname, url=spectate_link,
                                                              description=message_rm, color=0x992d22)
                                     embed_rm.set_thumbnail(
                                         url=match.image_map)
                                     # embed_rm.set_footer(text=message_footer)
                                     embed_rm.add_field(name="Equipo 1", value=team_1)
                                     embed_rm.add_field(name="Equipo 2", value=team_2)
-                                    await channel_to.send(embed=embed_rm, view=view)
+                                    embed_sent = await channel_to.send(embed=embed_rm, view=view)
                                     with open(os.path.realpath(os.path.dirname(__file__)) + "/matches-started.txt",
                                               'a') as file:
-                                        file.write(str(match.match_id) + "\n")
+                                        file.write(str(match.match_id) + "&&&" + str(embed_sent.id) + "\n")
                                     matches_started.append(match.match_id)
                             except Exception as e:
                                 print(e)
