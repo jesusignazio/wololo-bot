@@ -244,6 +244,7 @@ class MyClient(discord.Client):
                 print("Getting " + p.discord_name)
                 print(p.url_companion)
                 driver.get(p.url_companion)
+                time.sleep(7)
                 tbody = driver.find_element(By.TAG_NAME, "tbody")
                 matches_tr = tbody.find_elements(By.TAG_NAME, "tr")
 
