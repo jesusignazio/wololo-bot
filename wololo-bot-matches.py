@@ -414,14 +414,14 @@ class MyClient(discord.Client):
                                 print()
 
                                 # get emojis
-                                emoji_p1 = discord.utils.get(bot.emojis, name="p1")
-                                emoji_p2 = discord.utils.get(bot.emojis, name="p2")
-                                emoji_p3 = discord.utils.get(bot.emojis, name="p3")
-                                emoji_p4 = discord.utils.get(bot.emojis, name="p4")
-                                emoji_p5 = discord.utils.get(bot.emojis, name="p5")
-                                emoji_p6 = discord.utils.get(bot.emojis, name="p6")
-                                emoji_p7 = discord.utils.get(bot.emojis, name="p7")
-                                emoji_p8 = discord.utils.get(bot.emojis, name="p8")
+                                emoji_p1 = "<:p1:1188110998264098837>"
+                                emoji_p2 = "<:p2:1188110996980637706>"
+                                emoji_p3 = "<:p3:1188110993277075608>"
+                                emoji_p4 = "<:p4:1188110990869540986>"
+                                emoji_p5 = "<:p5:1188110989405732955>"
+                                emoji_p6 = "<:p6:1188110994908647464>"
+                                emoji_p7 = "<:p7:1188110988168405012>"
+                                emoji_p8 = "<:p8:1188110986163535872>"
 
                                 spectate_link = "https://aoe2lobby.com/w/" + match.match_id
 
@@ -498,14 +498,14 @@ class MyClient(discord.Client):
                                 print()
 
                                 # get emojis
-                                emoji_p1 = discord.utils.get(bot.emojis, name="p1")
-                                emoji_p2 = discord.utils.get(bot.emojis, name="p2")
-                                emoji_p3 = discord.utils.get(bot.emojis, name="p3")
-                                emoji_p4 = discord.utils.get(bot.emojis, name="p4")
-                                emoji_p5 = discord.utils.get(bot.emojis, name="p5")
-                                emoji_p6 = discord.utils.get(bot.emojis, name="p6")
-                                emoji_p7 = discord.utils.get(bot.emojis, name="p7")
-                                emoji_p8 = discord.utils.get(bot.emojis, name="p8")
+                                emoji_p1 = "<:p1:1188110998264098837>"
+                                emoji_p2 = "<:p2:1188110996980637706>"
+                                emoji_p3 = "<:p3:1188110993277075608>"
+                                emoji_p4 = "<:p4:1188110990869540986>"
+                                emoji_p5 = "<:p5:1188110989405732955>"
+                                emoji_p6 = "<:p6:1188110994908647464>"
+                                emoji_p7 = "<:p7:1188110988168405012>"
+                                emoji_p8 = "<:p8:1188110986163535872>"
 
                                 message_rm = match.match_type + "\n"
                                 message_rm = message_rm + match.completiontime + "\n"
@@ -600,14 +600,14 @@ class MyClient(discord.Client):
                                 print()
 
                                 # get emojis
-                                emoji_p1 = discord.utils.get(bot.emojis, name="p1")
-                                emoji_p2 = discord.utils.get(bot.emojis, name="p2")
-                                emoji_p3 = discord.utils.get(bot.emojis, name="p3")
-                                emoji_p4 = discord.utils.get(bot.emojis, name="p4")
-                                emoji_p5 = discord.utils.get(bot.emojis, name="p5")
-                                emoji_p6 = discord.utils.get(bot.emojis, name="p6")
-                                emoji_p7 = discord.utils.get(bot.emojis, name="p7")
-                                emoji_p8 = discord.utils.get(bot.emojis, name="p8")
+                                emoji_p1 = "<:p1:1188110998264098837>"
+                                emoji_p2 = "<:p2:1188110996980637706>"
+                                emoji_p3 = "<:p3:1188110993277075608>"
+                                emoji_p4 = "<:p4:1188110990869540986>"
+                                emoji_p5 = "<:p5:1188110989405732955>"
+                                emoji_p6 = "<:p6:1188110994908647464>"
+                                emoji_p7 = "<:p7:1188110988168405012>"
+                                emoji_p8 = "<:p8:1188110986163535872>"
 
                                 message_rm = match.match_type + "\n"
                                 message_rm = message_rm + match.completiontime + "\n"
