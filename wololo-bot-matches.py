@@ -207,30 +207,30 @@ def get_color_old(style):
 def get_color(style):
     # Azul
     if "rgba(64, 91, 255, 0.2)" in style:
-        return 1
+        return "🔵"
     # Rojo
     elif "rgba(255, 0, 0, 0.2)" in style:
-        return 2
+        return "🔴"
     # Verde
     elif "rgba(0, 255, 0, 0.2)" in style:
-        return 3
+        return "🟢"
     # Amarillo
     elif "rgba(255, 255, 0, 0.2)" in style:
-        return 4
+        return "🟡"
     # Cyan
     elif "rgba(0, 255, 255, 0.2)" in style:
-        return 5
+        return "⚪"
     # Magenta
     elif "rgba(255, 87, 179, 0.2)" in style:
-        return 6
+        return "🟣"
     # Naranja
     elif "rgba(255, 150, 0, 0.2)" in style:
-        return 7
+        return "🟠"
     # Gris
     elif "rgba(121, 121, 121, 0.2)" in style:
-        return 8
+        return "⚫"
     else:
-        return 0
+        return ""
 
 
 class MyClient(discord.Client):
@@ -413,57 +413,28 @@ class MyClient(discord.Client):
                                 print(match.completiontime)
                                 print()
 
-                                # get emojis
-                                emoji_p1 = "<:p1:1188110998264098837>"
-                                emoji_p2 = "<:p2:1188110996980637706>"
-                                emoji_p3 = "<:p3:1188110993277075608>"
-                                emoji_p4 = "<:p4:1188110990869540986>"
-                                emoji_p5 = "<:p5:1188110989405732955>"
-                                emoji_p6 = "<:p6:1188110994908647464>"
-                                emoji_p7 = "<:p7:1188110988168405012>"
-                                emoji_p8 = "<:p8:1188110986163535872>"
-
                                 spectate_link = "https://aoe2lobby.com/w/" + match.match_id
 
                                 message_rm = match.match_type + "\n"
                                 message_rm = message_rm + match.completiontime
 
                                 int_i = 0
-                                # team_1 = "```"
-                                # team_2 = "```"
+                                team_1 = "```"
+                                team_2 = "```"
                                 for player in match.players:
-                                    if player.color == 1:
-                                        player_color_emoji = emoji_p1
-                                    elif player.color == 2:
-                                        player_color_emoji = emoji_p2
-                                    elif player.color == 3:
-                                        player_color_emoji = emoji_p3
-                                    elif player.color == 4:
-                                        player_color_emoji = emoji_p4
-                                    elif player.color == 5:
-                                        player_color_emoji = emoji_p5
-                                    elif player.color == 6:
-                                        player_color_emoji = emoji_p6
-                                    elif player.color == 7:
-                                        player_color_emoji = emoji_p7
-                                    elif player.color == 8:
-                                        player_color_emoji = emoji_p8
-                                    else:
-                                        player_color_emoji = emoji_p1
+
                                     if int_i >= len(match.players) / 2:
                                         team_2 = team_2 + str(
-                                            player.new_elo + " " + player.elo_change + " " + player_color_emoji + player.player_name + " (" + player.civ + ")")
+                                            player.new_elo + " " + player.elo_change + " " + player.color + player.player_name + " (" + player.civ + ")")
                                         team_2 = team_2 + "\n"
                                     else:
                                         team_1 = team_1 + str(
-                                            player.new_elo + " " + player.elo_change + " " + player_color_emoji + player.player_name + " (" + player.civ + ")")
+                                            player.new_elo + " " + player.elo_change + " " + player.color + player.player_name + " (" + player.civ + ")")
                                         team_1 = team_1 + "\n"
                                     int_i = int_i + 1
 
-                                # team_1 = team_1 + "```"
-                                # team_2 = team_2 + "```"
-                                team_1 = ""
-                                team_2 = ""
+                                team_1 = team_1 + "```"
+                                team_2 = team_2 + "```"
                                 print("Sending message discord")
                                 channel_to = await bot.fetch_channel(SPECTATE_ID)
 
@@ -499,45 +470,16 @@ class MyClient(discord.Client):
                                 print(match.completiontime)
                                 print()
 
-                                # get emojis
-                                emoji_p1 = "<:p1:1188110998264098837>"
-                                emoji_p2 = "<:p2:1188110996980637706>"
-                                emoji_p3 = "<:p3:1188110993277075608>"
-                                emoji_p4 = "<:p4:1188110990869540986>"
-                                emoji_p5 = "<:p5:1188110989405732955>"
-                                emoji_p6 = "<:p6:1188110994908647464>"
-                                emoji_p7 = "<:p7:1188110988168405012>"
-                                emoji_p8 = "<:p8:1188110986163535872>"
-
                                 message_rm = match.match_type + "\n"
                                 message_rm = message_rm + match.completiontime + "\n"
                                 int_i = 0
-                                # team_1 = "```"
-                                # team_2 = "```"
-                                team_1 = ""
-                                team_2 = ""
+                                team_1 = "```"
+                                team_2 = "```"
                                 for player in match.players:
-                                    if player.color == 1:
-                                        player_color_emoji = emoji_p1
-                                    elif player.color == 2:
-                                        player_color_emoji = emoji_p2
-                                    elif player.color == 3:
-                                        player_color_emoji = emoji_p3
-                                    elif player.color == 4:
-                                        player_color_emoji = emoji_p4
-                                    elif player.color == 5:
-                                        player_color_emoji = emoji_p5
-                                    elif player.color == 6:
-                                        player_color_emoji = emoji_p6
-                                    elif player.color == 7:
-                                        player_color_emoji = emoji_p7
-                                    elif player.color == 8:
-                                        player_color_emoji = emoji_p8
-                                    else:
-                                        player_color_emoji = emoji_p1
+
                                     if int_i >= len(match.players) / 2:
                                         team_2 = team_2 + str(
-                                            player.new_elo + " " + player.elo_change + " " + player_color_emoji + player.player_name + " (" + player.civ + ")")
+                                            player.new_elo + " " + player.elo_change + " " + player.color + player.player_name + " (" + player.civ + ")")
                                         if player.result == "win":
                                             team_2 = team_2 + "🏆"
                                         else:
@@ -545,7 +487,7 @@ class MyClient(discord.Client):
                                         team_2 = team_2 + "\n"
                                     else:
                                         team_1 = team_1 + str(
-                                            player.new_elo + " " + player.elo_change + " " + player_color_emoji + player.player_name + " (" + player.civ + ")")
+                                            player.new_elo + " " + player.elo_change + " " + player.color + player.player_name + " (" + player.civ + ")")
                                         if player.result == "win":
                                             team_1 = team_1 + "🏆"
                                         else:
@@ -553,10 +495,8 @@ class MyClient(discord.Client):
                                         team_1 = team_1 + "\n"
                                     int_i = int_i + 1
 
-                                # team_1 = team_1 + "```"
-                                # team_2 = team_2 + "```"
-                                team_1 = ""
-                                team_2 = ""
+                                team_1 = team_1 + "```"
+                                team_2 = team_2 + "```"
                                 message_footer = "https://www.aoe2insights.com/match/" + match.match_id + "/"
                                 print("Sending message discord")
                                 channel_to = await bot.fetch_channel(CHANNEL_ID)
@@ -605,43 +545,16 @@ class MyClient(discord.Client):
                                 print(match.completiontime)
                                 print()
 
-                                # get emojis
-                                emoji_p1 = "<:p1:1188110998264098837>"
-                                emoji_p2 = "<:p2:1188110996980637706>"
-                                emoji_p3 = "<:p3:1188110993277075608>"
-                                emoji_p4 = "<:p4:1188110990869540986>"
-                                emoji_p5 = "<:p5:1188110989405732955>"
-                                emoji_p6 = "<:p6:1188110994908647464>"
-                                emoji_p7 = "<:p7:1188110988168405012>"
-                                emoji_p8 = "<:p8:1188110986163535872>"
-
                                 message_rm = match.match_type + "\n"
                                 message_rm = message_rm + match.completiontime + "\n"
                                 int_i = 0
-                                # team_1 = "```"
-                                # team_2 = "```"
+                                team_1 = "```"
+                                team_2 = "```"
                                 for player in match.players:
-                                    if player.color == 1:
-                                        player_color_emoji = emoji_p1
-                                    elif player.color == 2:
-                                        player_color_emoji = emoji_p2
-                                    elif player.color == 3:
-                                        player_color_emoji = emoji_p3
-                                    elif player.color == 4:
-                                        player_color_emoji = emoji_p4
-                                    elif player.color == 5:
-                                        player_color_emoji = emoji_p5
-                                    elif player.color == 6:
-                                        player_color_emoji = emoji_p6
-                                    elif player.color == 7:
-                                        player_color_emoji = emoji_p7
-                                    elif player.color == 8:
-                                        player_color_emoji = emoji_p8
-                                    else:
-                                        player_color_emoji = emoji_p1
+
                                     if int_i >= len(match.players) / 2:
                                         team_2 = team_2 + str(
-                                            player.new_elo + " " + player.elo_change + " " + player_color_emoji + player.player_name + " (" + player.civ + ")")
+                                            player.new_elo + " " + player.elo_change + " " + player.color + player.player_name + " (" + player.civ + ")")
                                         if player.result == "win":
                                             team_2 = team_2 + "🏆"
                                         else:
@@ -649,7 +562,7 @@ class MyClient(discord.Client):
                                         team_2 = team_2 + "\n"
                                     else:
                                         team_1 = team_1 + str(
-                                            player.new_elo + " " + player.elo_change + " " + player_color_emoji + player.player_name + " (" + player.civ + ")")
+                                            player.new_elo + " " + player.elo_change + " " + player.color + player.player_name + " (" + player.civ + ")")
                                         if player.result == "win":
                                             team_1 = team_1 + "🏆"
                                         else:
@@ -657,8 +570,8 @@ class MyClient(discord.Client):
                                         team_1 = team_1 + "\n"
                                     int_i = int_i + 1
 
-                                # team_1 = team_1 + "```"
-                                # team_2 = team_2 + "```"
+                                team_1 = team_1 + "```"
+                                team_2 = team_2 + "```"
                                 message_footer = "https://www.aoe2insights.com/match/" + match.match_id + "/"
                                 print("Sending message discord")
                                 channel_to = await bot.fetch_channel(CHANNEL_ID)
