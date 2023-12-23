@@ -345,6 +345,7 @@ class MyClient(discord.Client):
                                     player_color = get_color(style)
                                     result = "none"
                                     elo_change = 0
+                                    print(p1_stats)
                                     player1 = Player(0, p1_stats[1], p1_stats[2], elo_change, result, player_color,
                                                      1,
                                                      p1_stats[0])
