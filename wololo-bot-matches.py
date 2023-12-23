@@ -462,6 +462,8 @@ class MyClient(discord.Client):
 
                                 # team_1 = team_1 + "```"
                                 # team_2 = team_2 + "```"
+                                team_1 = ""
+                                team_2 = ""
                                 print("Sending message discord")
                                 channel_to = await bot.fetch_channel(SPECTATE_ID)
 
@@ -512,6 +514,8 @@ class MyClient(discord.Client):
                                 int_i = 0
                                 # team_1 = "```"
                                 # team_2 = "```"
+                                team_1 = ""
+                                team_2 = ""
                                 for player in match.players:
                                     if player.color == 1:
                                         player_color_emoji = emoji_p1
@@ -551,6 +555,8 @@ class MyClient(discord.Client):
 
                                 # team_1 = team_1 + "```"
                                 # team_2 = team_2 + "```"
+                                team_1 = ""
+                                team_2 = ""
                                 message_footer = "https://www.aoe2insights.com/match/" + match.match_id + "/"
                                 print("Sending message discord")
                                 channel_to = await bot.fetch_channel(CHANNEL_ID)
