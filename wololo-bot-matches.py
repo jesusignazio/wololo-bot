@@ -175,7 +175,7 @@ class Player:
             return "p" + str(self.color)
 
 
-def get_color(style):
+def get_color_old(style):
     # Azul
     if "rgba(64, 91, 255, 0.2)" in style:
         return "🔵"
@@ -202,6 +202,34 @@ def get_color(style):
         return "⚫"
     else:
         return ""
+
+def get_color(style):
+    # Azul
+    if "rgba(64, 91, 255, 0.2)" in style:
+        return 1
+    # Rojo
+    elif "rgba(255, 0, 0, 0.2)" in style:
+        return 2
+    # Verde
+    elif "rgba(0, 255, 0, 0.2)" in style:
+        return 3
+    # Amarillo
+    elif "rgba(255, 255, 0, 0.2)" in style:
+        return 4
+    # Cyan
+    elif "rgba(0, 255, 255, 0.2)" in style:
+        return 5
+    # Magenta
+    elif "rgba(255, 87, 179, 0.2)" in style:
+        return 6
+    # Naranja
+    elif "rgba(255, 150, 0, 0.2)" in style:
+        return 7
+    # Gris
+    elif "rgba(121, 121, 121, 0.2)" in style:
+        return 8
+    else:
+        return 0
 
 
 class MyClient(discord.Client):
