@@ -452,11 +452,11 @@ class MyClient(discord.Client):
                                         player_color_emoji = emoji_p1
                                     if int_i >= len(match.players) / 2:
                                         team_2 = team_2 + str(
-                                            player.new_elo + " " + player.elo_change + " " + str(player_color_emoji) + player.player_name + " (" + player.civ + ")")
+                                            player.new_elo + " " + player.elo_change + " " + player_color_emoji + player.player_name + " (" + player.civ + ")")
                                         team_2 = team_2 + "\n"
                                     else:
                                         team_1 = team_1 + str(
-                                            player.new_elo + " " + player.elo_change + " " + str(player_color_emoji) + player.player_name + " (" + player.civ + ")")
+                                            player.new_elo + " " + player.elo_change + " " + player_color_emoji + player.player_name + " (" + player.civ + ")")
                                         team_1 = team_1 + "\n"
                                     int_i = int_i + 1
 
@@ -533,7 +533,7 @@ class MyClient(discord.Client):
                                         player_color_emoji = emoji_p1
                                     if int_i >= len(match.players) / 2:
                                         team_2 = team_2 + str(
-                                            player.new_elo + " " + player.elo_change + " " + str(player_color_emoji) + player.player_name + " (" + player.civ + ")")
+                                            player.new_elo + " " + player.elo_change + " " + player_color_emoji + player.player_name + " (" + player.civ + ")")
                                         if player.result == "win":
                                             team_2 = team_2 + "🏆"
                                         else:
@@ -541,7 +541,7 @@ class MyClient(discord.Client):
                                         team_2 = team_2 + "\n"
                                     else:
                                         team_1 = team_1 + str(
-                                            player.new_elo + " " + player.elo_change + " " + str(player_color_emoji) + player.player_name + " (" + player.civ + ")")
+                                            player.new_elo + " " + player.elo_change + " " + player_color_emoji + player.player_name + " (" + player.civ + ")")
                                         if player.result == "win":
                                             team_1 = team_1 + "🏆"
                                         else:
@@ -635,7 +635,7 @@ class MyClient(discord.Client):
                                         player_color_emoji = emoji_p1
                                     if int_i >= len(match.players) / 2:
                                         team_2 = team_2 + str(
-                                            player.new_elo + " " + player.elo_change + " " + str(player_color_emoji) + player.player_name + " (" + player.civ + ")")
+                                            player.new_elo + " " + player.elo_change + " " + player_color_emoji + player.player_name + " (" + player.civ + ")")
                                         if player.result == "win":
                                             team_2 = team_2 + "🏆"
                                         else:
@@ -643,7 +643,7 @@ class MyClient(discord.Client):
                                         team_2 = team_2 + "\n"
                                     else:
                                         team_1 = team_1 + str(
-                                            player.new_elo + " " + player.elo_change + " " + str(player_color_emoji) + player.player_name + " (" + player.civ + ")")
+                                            player.new_elo + " " + player.elo_change + " " + player_color_emoji + player.player_name + " (" + player.civ + ")")
                                         if player.result == "win":
                                             team_1 = team_1 + "🏆"
                                         else:
