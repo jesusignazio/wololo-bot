@@ -171,6 +171,9 @@ class Player:
         else:
             self.civ = civ
 
+        def get_color_emoji():
+            return "p" + str(self.color)
+
 
 def get_color(style):
     # Azul
@@ -381,6 +384,16 @@ class MyClient(discord.Client):
                                 print(match.completiontime)
                                 print()
 
+                                # get emojis
+                                emoji_p1 = discord.utils.get(bot.emojis, name="p1")
+                                emoji_p2 = discord.utils.get(bot.emojis, name="p2")
+                                emoji_p3 = discord.utils.get(bot.emojis, name="p3")
+                                emoji_p4 = discord.utils.get(bot.emojis, name="p4")
+                                emoji_p5 = discord.utils.get(bot.emojis, name="p5")
+                                emoji_p6 = discord.utils.get(bot.emojis, name="p6")
+                                emoji_p7 = discord.utils.get(bot.emojis, name="p7")
+                                emoji_p8 = discord.utils.get(bot.emojis, name="p8")
+
                                 spectate_link = "https://aoe2lobby.com/w/" + match.match_id
 
                                 message_rm = match.match_type + "\n"
@@ -390,13 +403,31 @@ class MyClient(discord.Client):
                                 team_1 = "```"
                                 team_2 = "```"
                                 for player in match.players:
+                                    if player.color == 1:
+                                        player_color_emoji = emoji_p1
+                                    elif player.color == 2:
+                                        player_color_emoji = emoji_p2
+                                    elif player.color == 3:
+                                        player_color_emoji = emoji_p3
+                                    elif player.color == 4:
+                                        player_color_emoji = emoji_p4
+                                    elif player.color == 5:
+                                        player_color_emoji = emoji_p5
+                                    elif player.color == 6:
+                                        player_color_emoji = emoji_p6
+                                    elif player.color == 7:
+                                        player_color_emoji = emoji_p7
+                                    elif player.color == 8:
+                                        player_color_emoji = emoji_p8
+                                    else:
+                                        player_color_emoji = emoji_p1
                                     if int_i >= len(match.players) / 2:
                                         team_2 = team_2 + str(
-                                            player.new_elo + " " + player.elo_change + " " + player.color + player.player_name + " (" + player.civ + ")")
+                                            player.new_elo + " " + player.elo_change + " " + str(player_color_emoji) + player.player_name + " (" + player.civ + ")")
                                         team_2 = team_2 + "\n"
                                     else:
                                         team_1 = team_1 + str(
-                                            player.new_elo + " " + player.elo_change + " " + player.color + player.player_name + " (" + player.civ + ")")
+                                            player.new_elo + " " + player.elo_change + " " + str(player_color_emoji) + player.player_name + " (" + player.civ + ")")
                                         team_1 = team_1 + "\n"
                                     int_i = int_i + 1
 
@@ -436,15 +467,44 @@ class MyClient(discord.Client):
                                 print(match.image_map)
                                 print(match.completiontime)
                                 print()
+
+                                # get emojis
+                                emoji_p1 = discord.utils.get(bot.emojis, name="p1")
+                                emoji_p2 = discord.utils.get(bot.emojis, name="p2")
+                                emoji_p3 = discord.utils.get(bot.emojis, name="p3")
+                                emoji_p4 = discord.utils.get(bot.emojis, name="p4")
+                                emoji_p5 = discord.utils.get(bot.emojis, name="p5")
+                                emoji_p6 = discord.utils.get(bot.emojis, name="p6")
+                                emoji_p7 = discord.utils.get(bot.emojis, name="p7")
+                                emoji_p8 = discord.utils.get(bot.emojis, name="p8")
+
                                 message_rm = match.match_type + "\n"
                                 message_rm = message_rm + match.completiontime + "\n"
                                 int_i = 0
                                 team_1 = "```"
                                 team_2 = "```"
                                 for player in match.players:
+                                    if player.color == 1:
+                                        player_color_emoji = emoji_p1
+                                    elif player.color == 2:
+                                        player_color_emoji = emoji_p2
+                                    elif player.color == 3:
+                                        player_color_emoji = emoji_p3
+                                    elif player.color == 4:
+                                        player_color_emoji = emoji_p4
+                                    elif player.color == 5:
+                                        player_color_emoji = emoji_p5
+                                    elif player.color == 6:
+                                        player_color_emoji = emoji_p6
+                                    elif player.color == 7:
+                                        player_color_emoji = emoji_p7
+                                    elif player.color == 8:
+                                        player_color_emoji = emoji_p8
+                                    else:
+                                        player_color_emoji = emoji_p1
                                     if int_i >= len(match.players) / 2:
                                         team_2 = team_2 + str(
-                                            player.new_elo + " " + player.elo_change + " " + player.color + player.player_name + " (" + player.civ + ")")
+                                            player.new_elo + " " + player.elo_change + " " + str(player_color_emoji) + player.player_name + " (" + player.civ + ")")
                                         if player.result == "win":
                                             team_2 = team_2 + "🏆"
                                         else:
@@ -452,7 +512,7 @@ class MyClient(discord.Client):
                                         team_2 = team_2 + "\n"
                                     else:
                                         team_1 = team_1 + str(
-                                            player.new_elo + " " + player.elo_change + " " + player.color + player.player_name + " (" + player.civ + ")")
+                                            player.new_elo + " " + player.elo_change + " " + str(player_color_emoji) + player.player_name + " (" + player.civ + ")")
                                         if player.result == "win":
                                             team_1 = team_1 + "🏆"
                                         else:
@@ -509,15 +569,44 @@ class MyClient(discord.Client):
                                 print(match.image_map)
                                 print(match.completiontime)
                                 print()
+
+                                # get emojis
+                                emoji_p1 = discord.utils.get(bot.emojis, name="p1")
+                                emoji_p2 = discord.utils.get(bot.emojis, name="p2")
+                                emoji_p3 = discord.utils.get(bot.emojis, name="p3")
+                                emoji_p4 = discord.utils.get(bot.emojis, name="p4")
+                                emoji_p5 = discord.utils.get(bot.emojis, name="p5")
+                                emoji_p6 = discord.utils.get(bot.emojis, name="p6")
+                                emoji_p7 = discord.utils.get(bot.emojis, name="p7")
+                                emoji_p8 = discord.utils.get(bot.emojis, name="p8")
+
                                 message_rm = match.match_type + "\n"
                                 message_rm = message_rm + match.completiontime + "\n"
                                 int_i = 0
                                 team_1 = "```"
                                 team_2 = "```"
                                 for player in match.players:
+                                    if player.color == 1:
+                                        player_color_emoji = emoji_p1
+                                    elif player.color == 2:
+                                        player_color_emoji = emoji_p2
+                                    elif player.color == 3:
+                                        player_color_emoji = emoji_p3
+                                    elif player.color == 4:
+                                        player_color_emoji = emoji_p4
+                                    elif player.color == 5:
+                                        player_color_emoji = emoji_p5
+                                    elif player.color == 6:
+                                        player_color_emoji = emoji_p6
+                                    elif player.color == 7:
+                                        player_color_emoji = emoji_p7
+                                    elif player.color == 8:
+                                        player_color_emoji = emoji_p8
+                                    else:
+                                        player_color_emoji = emoji_p1
                                     if int_i >= len(match.players) / 2:
                                         team_2 = team_2 + str(
-                                            player.new_elo + " " + player.elo_change + " " + player.color + player.player_name + " (" + player.civ + ")")
+                                            player.new_elo + " " + player.elo_change + " " + str(player_color_emoji) + player.player_name + " (" + player.civ + ")")
                                         if player.result == "win":
                                             team_2 = team_2 + "🏆"
                                         else:
@@ -525,7 +614,7 @@ class MyClient(discord.Client):
                                         team_2 = team_2 + "\n"
                                     else:
                                         team_1 = team_1 + str(
-                                            player.new_elo + " " + player.elo_change + " " + player.color + player.player_name + " (" + player.civ + ")")
+                                            player.new_elo + " " + player.elo_change + " " + str(player_color_emoji) + player.player_name + " (" + player.civ + ")")
                                         if player.result == "win":
                                             team_1 = team_1 + "🏆"
                                         else:
