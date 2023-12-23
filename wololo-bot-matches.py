@@ -203,6 +203,7 @@ def get_color_old(style):
     else:
         return ""
 
+
 def get_color(style):
     # Azul
     if "rgba(64, 91, 255, 0.2)" in style:
