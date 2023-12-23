@@ -485,8 +485,12 @@ class MyClient(discord.Client):
                                         if m.match_id == match_id:
                                             # borrar mensaje de discord
                                             channel_to = await bot.fetch_channel(SPECTATE_ID)
-                                            msg = await channel_to.fetch_message(m.discord_message_id)
-                                            await msg.delete()
+                                            try:
+                                                msg = await channel_to.fetch_message(m.discord_message_id)
+                                                await msg.delete()
+                                            except Exception as e:
+                                                print(e)
+                                                print("Mensaje posiblemente ya borrado")
                                             matches_started.remove(m)
                                             with open(os.path.realpath(
                                                     os.path.dirname(__file__)) + "/matches-started.txt",
