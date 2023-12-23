@@ -558,7 +558,7 @@ class MyClient(discord.Client):
                         print("Already reported: " + match_id)
                         break
 
-                time.sleep(30)
+                time.sleep(10)
 
 
 bot = MyClient(intents=intents)
