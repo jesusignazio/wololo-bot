@@ -236,11 +236,6 @@ def get_color(style):
 class MyClient(discord.Client):
     async def on_ready(self):
         print("Running")
-        options = Options()
-        service = Service()
-        options.add_argument("-headless")
-
-        driver = webdriver.Firefox(service=service, options=options)
 
         while True:
             print("New loop")
@@ -275,6 +270,12 @@ class MyClient(discord.Client):
                 print()
                 print("Getting " + p.discord_name)
                 print(p.url_companion)
+
+                options = Options()
+                service = Service()
+                options.add_argument("-headless")
+
+                driver = webdriver.Firefox(service=service, options=options)
                 driver.get(p.url_companion)
                 time.sleep(7)
                 tbody = driver.find_element(By.TAG_NAME, "tbody")
@@ -596,6 +597,7 @@ class MyClient(discord.Client):
                         print("Already reported: " + match_id)
                         break
 
+                driver.quit()
                 time.sleep(10)
 
 
