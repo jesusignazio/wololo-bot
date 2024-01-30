@@ -2,7 +2,7 @@
 Description=Wololo bot commands
 
 [Service]
-ExecStart=/home/ubuntu/wololo-bot/venv/bin/python /home/ubuntu/wololo-bot/wololo-bot-commands.py
+ExecStart=/home/jesusignacio/wololo-bot/venv/bin/python /home/jesusignacio/wololo-bot/wololo-bot-commands.py
 
 [Install]
 WantedBy=multi-user.target

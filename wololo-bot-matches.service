@@ -2,7 +2,7 @@
 Description=Wololo bot matches
 
 [Service]
-ExecStart=/home/ubuntu/wololo-bot/venv/bin/python /home/ubuntu/wololo-bot/wololo-bot-matches.py
+ExecStart=/home/jesusignacio/wololo-bot/venv/bin/python /home/jesusignacio/wololo-bot/wololo-bot-matches.py
 Restart=always
 RuntimeMaxSec=2h
 

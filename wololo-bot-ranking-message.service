@@ -2,4 +2,4 @@
 Description=Wololo bot ranking message
 
 [Service]
-ExecStart=/home/ubuntu/wololo-bot/venv/bin/python /home/ubuntu/wololo-bot/wololo-bot-ranking-message.py
+ExecStart=/home/jesusignacio/wololo-bot/venv/bin/python /home/jesusignacio/wololo-bot/wololo-bot-ranking-message.py
