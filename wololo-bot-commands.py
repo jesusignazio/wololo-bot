@@ -51,7 +51,7 @@ async def add_ranking(interaction: discord.Interaction, profile_id: typing.Optio
                     0) + "&&&" + str(0) + "&&&" + str(steam_id) + "\n")
                 await interaction.followup.send("Añadido " + name + " al ranking.")
                 print("Añadiddo " + name + " al ranking.")
-        else:
-            await interaction.followup.send("No tienes permisos!")
+    else:
+        await interaction.followup.send("No tienes permisos!")
 
 bot.run(TOKEN)
