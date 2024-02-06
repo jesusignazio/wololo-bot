@@ -2,7 +2,7 @@
 Description=wololo-bot-ranking-message
 
 [Timer]
-OnCalendar=00/10:00
+OnCalendar=*-*-* 10.20:00:00
 Unit=wololo-bot-ranking-message.service
 Persistent=true
 
