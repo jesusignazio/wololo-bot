@@ -43,7 +43,7 @@ async def on_ready():
 @app_commands.describe(profile_id="Profile id de aoe2.net", name="Nombre", discord_id="ID de discord")
 async def add_ranking(interaction: discord.Interaction, profile_id: typing.Optional[str], name: typing.Optional[str], discord_id: typing.Optional[str], steam_id: typing.Optional[str]):
     log("Comando add_ranking")
-    if interaction.user.id == 474968187637596160 or interaction.user.id == 401762141906141184 or interaction.user.id == 292314272640401409 or interaction.user.id == 618398991700459520:
+    if interaction.user.id == 474968187637596160 or interaction.user.id == 401762141906141184 or interaction.user.id == 292314272640401409 or interaction.user.id == 618398991700459520 or interaction.user.id == 184444242440093696:
         await interaction.response.defer()
         if profile_id is not None and name is not None and discord_id is not None:
             with open(os.path.realpath(os.path.dirname(__file__)) + "/watched.txt", 'a') as f:
