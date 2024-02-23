@@ -398,7 +398,7 @@ class MyClient(discord.Client):
                                                      p2_stats[2])
                                     match.players.append(player2)
 
-                            """if not FLAG_COMPLETED and FLAG_PUBLISHED_SPECTATE:
+                            if not FLAG_COMPLETED and FLAG_PUBLISHED_SPECTATE:
                                 print("Partida no completada y ya publicada para espectar")
                                 break
 
@@ -459,8 +459,7 @@ class MyClient(discord.Client):
                                 matched_started = MatchWatchedHolder(match.match_id, embed_sent.id)
                                 matches_started.append(matched_started)
 
-                            if FLAG_COMPLETED and not FLAG_PUBLISHED_SPECTATE:"""
-                            if FLAG_COMPLETED:
+                            if FLAG_COMPLETED and not FLAG_PUBLISHED_SPECTATE:
                                 print("Partida completada y no publicada para espectar, publicarla como completada")
                                 print()
                                 print("Notify game finished")
@@ -515,7 +514,7 @@ class MyClient(discord.Client):
                                     file.write(str(match.match_id) + "\n")
                                 matches_reported.append(match.match_id)
 
-                            """if FLAG_COMPLETED and FLAG_PUBLISHED_SPECTATE:
+                            if FLAG_COMPLETED and FLAG_PUBLISHED_SPECTATE:
                                 print("Partida completada y publicada para espectar, borrarla de espectar y publicarla como completada")
                                 # borrar match_started_holder de la lista y de matches-started.txt
                                 for m in matches_started:
@@ -588,7 +587,7 @@ class MyClient(discord.Client):
                                 with open(os.path.realpath(os.path.dirname(__file__)) + "/matches.txt",
                                           'a') as file:
                                     file.write(str(match.match_id) + "\n")
-                                matches_reported.append(match.match_id)"""
+                                matches_reported.append(match.match_id)
 
                         except Exception as e:
                             print(e)
