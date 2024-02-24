@@ -530,7 +530,7 @@ class MyClient(discord.Client):
                                         matches_started.remove(m)
                                         with open(os.path.realpath(
                                                 os.path.dirname(__file__)) + "/matches-started.txt",
-                                                  'a') as file:
+                                                  'w') as file:
                                             for n in matches_started:
                                                 file.write(
                                                     str(n.match_id) + "&&&" + str(n.discord_message_id) + "\n")
