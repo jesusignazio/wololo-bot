@@ -6,7 +6,7 @@ from discord.ext import commands
 import discord
 
 description = "DK_Wololo"
-TOKEN = 'MTE0NjExMDE2MDcyNTYyMjg0NQ.Gz4VjC.-VMX53nHhI6deUQl5QjpT5vtQ-dn4bDn-bVRG4'
+TOKEN = 'MTE0NjExMDE2MDcyNTYyMjg0NQ.GGHN-q.9NiS9Agtu3JxHKpRH-rUaQ6e_4VFP5ZhOiWBG0'
 
 
 def log(message):

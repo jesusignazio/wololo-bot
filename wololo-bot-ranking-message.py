@@ -3,7 +3,7 @@ import discord
 import os
 import requests
 
-TOKEN = 'MTE0NjExMDE2MDcyNTYyMjg0NQ.Gz4VjC.-VMX53nHhI6deUQl5QjpT5vtQ-dn4bDn-bVRG4'
+TOKEN = 'MTE0NjExMDE2MDcyNTYyMjg0NQ.GGHN-q.9NiS9Agtu3JxHKpRH-rUaQ6e_4VFP5ZhOiWBG0'
 CHANNEL_ID = 799746255873376297
 
 intents = discord.Intents.default()
