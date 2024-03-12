@@ -400,7 +400,6 @@ class MyClient(discord.Client):
 
                             if not FLAG_COMPLETED and FLAG_PUBLISHED_SPECTATE:
                                 print("Partida no completada y ya publicada para espectar")
-                                break
 
                             if not FLAG_COMPLETED and not FLAG_PUBLISHED_SPECTATE:
                                 print("Partida no completada y no publicada para espectar")
