@@ -400,6 +400,25 @@ class MyClient(discord.Client):
 
                             if not FLAG_COMPLETED and FLAG_PUBLISHED_SPECTATE:
                                 print("Partida no completada y ya publicada para espectar")
+                                # Borrar si han pasado más de 3 horas
+                                if has_expired(match.completiontime):
+                                    for m in matches_started:
+                                        if m.match_id == match_id:
+                                            # borrar mensaje de discord
+                                            channel_to = await bot.fetch_channel(SPECTATE_ID)
+                                            try:
+                                                msg = await channel_to.fetch_message(m.discord_message_id)
+                                                await msg.delete()
+                                            except Exception as e:
+                                                print(e)
+                                                print("Mensaje posiblemente ya borrado")
+                                            matches_started.remove(m)
+                                            with open(os.path.realpath(
+                                                    os.path.dirname(__file__)) + "/matches-started.txt",
+                                                      'w') as file:
+                                                for n in matches_started:
+                                                    file.write(
+                                                        str(n.match_id) + "&&&" + str(n.discord_message_id) + "\n")
 
                             if not FLAG_COMPLETED and not FLAG_PUBLISHED_SPECTATE:
                                 print("Partida no completada y no publicada para espectar")
@@ -412,6 +431,10 @@ class MyClient(discord.Client):
                                 print(match.image_map)
                                 print(match.completiontime)
                                 print()
+
+                                if has_expired(match.completiontime):
+                                    print("Game has expired")
+                                    continue
 
                                 spectate_link = "https://aoe2lobby.com/w/" + match.match_id
 
@@ -596,6 +619,23 @@ class MyClient(discord.Client):
 
                 driver.quit()
                 time.sleep(10)
+
+
+def has_expired(time_str):
+    # Define the time format
+    time_format = '%d/%m/%Y, %H:%M'
+
+    # Parse the given time string to a datetime object
+    given_time = datetime.datetime.strptime(time_str, time_format)
+
+    # Get the current datetime
+    current_time = datetime.datetime.now()
+
+    # Calculate the difference between the current time and the given time
+    time_difference = current_time - given_time
+
+    # Check if the difference is greater than or equal to three hours
+    return time_difference >= datetime.timedelta(hours=3)
 
 
 bot = MyClient(intents=intents)
