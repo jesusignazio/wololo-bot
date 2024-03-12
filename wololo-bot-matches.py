@@ -1,4 +1,5 @@
 import datetime
+import random
 import time
 import discord
 import os
@@ -266,6 +267,7 @@ class MyClient(discord.Client):
                     match_watched = MatchWatchedHolder(match_id, discord_message_id)
                     matches_started.append(match_watched)
 
+            random.shuffle(list_players)
             for p in list_players:
                 print()
                 print("Getting " + p.discord_name)
