@@ -594,7 +594,6 @@ class MyClient(discord.Client):
 
                     else:
                         print("Already reported: " + match_id)
-                        break
 
                 driver.quit()
                 time.sleep(10)
