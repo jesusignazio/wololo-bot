@@ -402,6 +402,7 @@ class MyClient(discord.Client):
                                 print("Partida no completada y ya publicada para espectar")
                                 # Borrar si han pasado más de 3 horas
                                 if has_expired(match.completiontime):
+                                    print("Game has expired")
                                     for m in matches_started:
                                         if m.match_id == match_id:
                                             # borrar mensaje de discord
