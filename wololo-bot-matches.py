@@ -534,7 +534,6 @@ class MyClient(discord.Client):
                                             for n in matches_started:
                                                 file.write(
                                                     str(n.match_id) + "&&&" + str(n.discord_message_id) + "\n")
-                                        break
                                 # publicar partida
                                 print()
                                 print("Notify game finished")
