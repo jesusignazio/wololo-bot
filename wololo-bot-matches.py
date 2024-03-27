@@ -250,7 +250,6 @@ class MyClient(discord.Client):
                 driver.set_script_timeout(10)
 
             try:
-
                 print("New loop")
                 matches_reported = []
                 matches_started = []
