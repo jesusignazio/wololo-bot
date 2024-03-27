@@ -240,6 +240,7 @@ class MyClient(discord.Client):
         driver = None
 
         while True:
+            time.sleep(3)
             if driver is None:
                 options = Options()
                 service = Service()
