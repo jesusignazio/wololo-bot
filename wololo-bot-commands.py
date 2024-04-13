@@ -56,9 +56,9 @@ async def add_ranking(interaction: discord.Interaction, profile_id: typing.Optio
         await interaction.followup.send("No tienes permisos!")
 
 
-@bot.tree.command(name='clear', description='this command will clear msgs')
-async def clear(ctx, amount=5):
-    await ctx.channel.purge(limit=amount)
+@bot.tree.command(name="clear", description="this command will clear msgs")
+async def clear(ctx, amount: typing.Optional[str]):
+    await ctx.channel.purge(limit=int(amount))
 
 
 bot.run(TOKEN)
