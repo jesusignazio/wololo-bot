@@ -4,7 +4,6 @@ import time
 import discord
 import os
 import sys
-import pickle
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.firefox.options import Options
@@ -59,60 +58,6 @@ class PlayerWatched:
 
         self.url_companion = "https://www.aoe2companion.com/profile/" + str(profile_id)
 
-    def __repr__(self):
-        return f"PlayerWatched({self.profile_id}, {self.discord_id}, {self.discord_name})"
-
-
-def load_players_from_text(file_path):
-    players = []
-    with open(file_path, 'r') as file:
-        for line in file:
-            profile_id, discord_id, discord_name = line.strip().split('&&&')
-            players.append(PlayerWatched(profile_id, discord_id, discord_name))
-    return players
-
-
-def save_players_to_pickle(players, file_path):
-    with open(file_path, 'wb') as file:
-        pickle.dump(players, file)
-
-def load_ids_from_text(file_path):
-    ids = []
-    with open(file_path, 'r') as file:
-        for line in file:
-            id = line.strip()
-            ids.append(id)
-    return ids
-
-
-def save_ids_to_pickle(ids, file_path):
-    with open(file_path, 'wb') as file:
-        pickle.dump(ids, file)
-
-
-# Example usage:
-"""text_file_path = 'matched.txt'  # Path to your text file containing IDs
-pickle_file_path = 'matched.pkl'  # Path where you want to save the pickle file
-
-# Load IDs from the text file
-ids = load_ids_from_text(text_file_path)
-
-# Save the IDs to a pickle file
-save_ids_to_pickle(ids, pickle_file_path)
-
-print("IDs have been successfully migrated to pickle format.")"""
-
-# Example usage:
-text_file_path = 'matches.txt'  # Path to your text file containing IDs
-pickle_file_path = 'matches.pkl'  # Path where you want to save the pickle file
-
-# Load IDs from the text file
-ids = load_ids_from_text(text_file_path)
-
-# Save the IDs to a pickle file
-save_ids_to_pickle(ids, pickle_file_path)
-
-print("IDs have been successfully migrated to pickle format.")
 
 class Player:
     def __init__(self, profile_id, player_name, new_elo, elo_change, result, color, team, civ):
@@ -707,15 +652,5 @@ def has_expired(time_str):
     return time_difference >= datetime.timedelta(hours=2)
 
 
-# bot = MyClient(intents=intents)
-# bot.run(TOKEN)
-
-# Example usage:
-text_file_path = 'watched.txt'  # Path to your existing text file
-pickle_file_path = 'watched.pkl'  # Path where you want to save the pickle file
-
-# Load players from the text file
-players = load_players_from_text(text_file_path)
-
-# Save the players to a pickle file
-save_players_to_pickle(players, pickle_file_path)
+bot = MyClient(intents=intents)
+bot.run(TOKEN)

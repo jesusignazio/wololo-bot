@@ -57,12 +57,28 @@ def save_players_to_pickle(players, file_path):
         pickle.dump(players, file)
 
 
+def load_ids_from_text(file_path):
+    ids = []
+    with open(file_path, 'r') as file:
+        for line in file:
+            id = line.strip()
+            ids.append(id)
+    return ids
+
+
+def save_ids_to_pickle(ids, file_path):
+    with open(file_path, 'wb') as file:
+        pickle.dump(ids, file)
+
+
 # Example usage:
-text_file_path = 'watched.txt'  # Path to your existing text file
-pickle_file_path = 'watched.pkl'  # Path where you want to save the pickle file
+text_file_path = 'matched.txt'  # Path to your text file containing IDs
+pickle_file_path = 'matched.pkl'  # Path where you want to save the pickle file
 
-# Load players from the text file
-players = load_players_from_text(text_file_path)
+# Load IDs from the text file
+ids = load_ids_from_text(text_file_path)
 
-# Save the players to a pickle file
-save_players_to_pickle(players, pickle_file_path)
+# Save the IDs to a pickle file
+save_ids_to_pickle(ids, pickle_file_path)
+
+print("IDs have been successfully migrated to pickle format.")
