@@ -13,7 +13,7 @@ list_players = []
 
 
 class PlayerWatched:
-    def __init__(self, profile_id, discord_id, discord_name, last_rm_elo, new_rm_elo, last_tg_elo, new_tg_elo, steam_id):
+    def __init__(self, profile_id, discord_id, discord_name, last_rm_elo, new_rm_elo, last_tg_elo, new_tg_elo, last_ew_elo, new_ew_elo, steam_id):
         self.profile_id = profile_id
         self.discord_id = discord_id
         self.discord_name = discord_name
@@ -24,11 +24,14 @@ class PlayerWatched:
         self.last_tg_elo = last_tg_elo
         self.new_tg_elo = new_tg_elo
         self.max_tg_elo = ""
+        self.last_ew_elo = last_ew_elo
+        self.new_ew_elo = new_ew_elo
         self.steam_id = steam_id
 
         self.url_relic = "https://aoe-api.reliclink.com/community/leaderboard/GetPersonalStat?title=age2&profile_names=[%22/steam/" + str(steam_id) + "%22]"
         self.url_rm = "https://aoe2.net/api/player/ratinghistory?game=aoe2de&leaderboard_id=3&profile_id=" + str(profile_id) + "&count=1"
         self.url_tg = "https://aoe2.net/api/player/ratinghistory?game=aoe2de&leaderboard_id=4&profile_id=" + str(profile_id) + "&count=1"
+        self.url_ew = "https://aoe2.net/api/player/ratinghistory?game=aoe2de&leaderboard_id=13&profile_id=" + str(profile_id) + "&count=1"
 
     def get_rm_elo_diff(self):
         if self.last_rm_elo == 0:
@@ -54,6 +57,18 @@ class PlayerWatched:
             else:
                 return ""
 
+    def get_ew_elo_diff(self):
+        if self.last_ew_elo == 0:
+            return ""
+        else:
+            diff = self.new_ew_elo - self.last_ew_elo
+            if diff < 0:
+                return " (" + str(diff) + ") "
+            elif diff > 0:
+                return " (+" + str(diff) + ") "
+            else:
+                return ""
+
 
 class MyClient(discord.Client):
     async def on_ready(self):
@@ -68,10 +83,12 @@ class MyClient(discord.Client):
                 discord_name = words[2]
                 last_elo = int(words[3])
                 last_tg_elo = int(words[4])
-                steam_id = int(words[5])
+                last_ew_elo = int(words[5])
+                steam_id = int(words[6])
                 new_rm_elo = None
                 new_tg_elo = None
-                player_watched = PlayerWatched(profile_id, discord_id, discord_name, last_elo, new_rm_elo, last_tg_elo, new_tg_elo, steam_id)
+                new_ew_elo = None
+                player_watched = PlayerWatched(profile_id, discord_id, discord_name, last_elo, new_rm_elo, last_tg_elo, new_tg_elo, last_ew_elo, new_ew_elo, steam_id)
                 list_players.append(player_watched)
 
         for p in list_players:
@@ -87,6 +104,9 @@ class MyClient(discord.Client):
                     elif int(data['leaderboardStats'][i]['leaderboard_id']) == 4:  # TG
                         new_tg_elo = int(data['leaderboardStats'][i]['rating'])
                         p.new_tg_elo = new_tg_elo
+                    elif int(data['leaderboardStats'][i]['leaderboard_id']) == 27:  # EW
+                        new_ew_elo = int(data['leaderboardStats'][i]['rating'])
+                        p.new_ew_elo = new_ew_elo
 
                 # TODO get max ELO
 
@@ -94,6 +114,7 @@ class MyClient(discord.Client):
                 print(e)
                 p.new_rm_elo = p.last_rm_elo
                 p.new_tg_elo = p.last_tg_elo
+                p.new_ew_elo = p.last_ew_elo
 
             time.sleep(1)
 
@@ -131,6 +152,24 @@ class MyClient(discord.Client):
             message_tg = message_tg + "\n"
         message_tg = message_tg + "```"
 
+        """Sort players by new EW elo rating"""
+        list_players.sort(key=lambda x: x.new_ew_elo, reverse=True)
+
+        i = 1
+        message_ew = "```"
+        for p in list_players:
+            message_ew = message_ew + "{:02d}".format(i) + " " + str(p.new_ew_elo).zfill(
+                4) + " " + p.discord_name + p.get_ew_elo_diff()
+            if i == 1:
+                message_ew = message_ew + "🥇"
+            elif i == 2:
+                message_ew = message_ew + "🥈"
+            elif i == 3:
+                message_ew = message_ew + "🥉"
+            i += 1
+            message_ew = message_ew + "\n"
+        message_ew = message_ew + "```"
+
         channel_to = await bot.fetch_channel(CHANNEL_ID)
 
         print("Purge channel content")
@@ -149,6 +188,12 @@ class MyClient(discord.Client):
         embed_tg.set_thumbnail(url="https://cdn.discordapp.com/attachments/1049283724497404004/1049284070665900043/logotipo-dark-knight-knight-esport_100659-74_1.png")
         await channel_to.send(embed=embed_tg)
 
+        print("Sending message EW")
+        embed_tg = discord.Embed(title="Ranking EW", description=message_ew, color=0x0000CD)
+        embed_tg.set_thumbnail(
+            url="https://cdn.discordapp.com/attachments/1049283724497404004/1049284070665900043/logotipo-dark-knight-knight-esport_100659-74_1.png")
+        await channel_to.send(embed=embed_tg)
+
         """Clear watched.txt file"""
         with open(os.path.realpath(os.path.dirname(__file__)) + "/watched.txt", 'w') as f:
             pass
@@ -156,7 +201,7 @@ class MyClient(discord.Client):
         """Save new content to watched.txt"""
         for p in list_players:
             with open(os.path.realpath(os.path.dirname(__file__)) + "/watched.txt", 'a') as f:
-                f.write(p.profile_id + "&&&" + p.discord_id + "&&&" + p.discord_name + "&&&" + str(p.new_rm_elo) + "&&&" + str(p.new_tg_elo) + "&&&" +  str(p.steam_id) + "\n")
+                f.write(p.profile_id + "&&&" + p.discord_id + "&&&" + p.discord_name + "&&&" + str(p.new_rm_elo) + "&&&" + str(p.new_tg_elo) + "&&&" + str(p.new_ew_elo) + "&&&" + str(p.steam_id) + "\n")
         exit()
 
 
