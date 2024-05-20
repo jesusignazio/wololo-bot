@@ -163,6 +163,8 @@ class MyClient(discord.Client):
         i = 1
         message_ew = "```"
         for p in list_players:
+            if p.new_ew_elo == 0:
+                continue
             message_ew = message_ew + "{:02d}".format(i) + " " + str(p.new_ew_elo).zfill(
                 4) + " " + p.discord_name + p.get_ew_elo_diff()
             if i == 1:
