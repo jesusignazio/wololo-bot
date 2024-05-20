@@ -20,12 +20,12 @@ class PlayerWatched:
 
         self.last_rm_elo = last_rm_elo
         self.new_rm_elo = new_rm_elo
-        self.max_rm_elo = ""
+        self.max_rm_elo = 0
         self.last_tg_elo = last_tg_elo
         self.new_tg_elo = new_tg_elo
-        self.max_tg_elo = ""
+        self.max_tg_elo = 0
         self.last_ew_elo = last_ew_elo
-        self.new_ew_elo = ""
+        self.new_ew_elo = 0
         self.steam_id = steam_id
 
         self.url_relic = "https://aoe-api.reliclink.com/community/leaderboard/GetPersonalStat?title=age2&profile_names=[%22/steam/" + str(steam_id) + "%22]"
@@ -105,6 +105,7 @@ class MyClient(discord.Client):
                         new_tg_elo = int(data['leaderboardStats'][i]['rating'])
                         p.new_tg_elo = new_tg_elo
                     elif int(data['leaderboardStats'][i]['leaderboard_id']) == 27:  # EW
+                        new_ew_elo = 0
                         new_ew_elo = int(data['leaderboardStats'][i]['rating'])
                         print(new_ew_elo)
                         p.new_ew_elo = new_ew_elo
