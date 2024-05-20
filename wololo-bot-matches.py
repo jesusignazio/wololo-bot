@@ -4,6 +4,7 @@ import time
 import discord
 import os
 import sys
+import pickle
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.firefox.options import Options
@@ -57,6 +58,23 @@ class PlayerWatched:
         self.discord_name = discord_name
 
         self.url_companion = "https://www.aoe2companion.com/profile/" + str(profile_id)
+
+    def __repr__(self):
+        return f"PlayerWatched({self.profile_id}, {self.discord_id}, {self.discord_name})"
+
+
+def load_players_from_text(file_path):
+    players = []
+    with open(file_path, 'r') as file:
+        for line in file:
+            profile_id, discord_id, discord_name = line.strip().split(',')
+            players.append(PlayerWatched(profile_id, discord_id, discord_name))
+    return players
+
+
+def save_players_to_pickle(players, file_path):
+    with open(file_path, 'wb') as file:
+        pickle.dump(players, file)
 
 
 class Player:
@@ -652,5 +670,15 @@ def has_expired(time_str):
     return time_difference >= datetime.timedelta(hours=2)
 
 
-bot = MyClient(intents=intents)
-bot.run(TOKEN)
+# bot = MyClient(intents=intents)
+# bot.run(TOKEN)
+
+# Example usage:
+text_file_path = 'watched.txt'  # Path to your existing text file
+pickle_file_path = 'watched.pkl'  # Path where you want to save the pickle file
+
+# Load players from the text file
+players = load_players_from_text(text_file_path)
+
+# Save the players to a pickle file
+save_players_to_pickle(players, pickle_file_path)
