@@ -105,8 +105,11 @@ class MyClient(discord.Client):
                         new_tg_elo = int(data['leaderboardStats'][i]['rating'])
                         p.new_tg_elo = new_tg_elo
                     elif int(data['leaderboardStats'][i]['leaderboard_id']) == 27:  # EW
-                        new_ew_elo = 0
-                        new_ew_elo = int(data['leaderboardStats'][i]['rating'])
+                        try:
+                            new_ew_elo = int(data['leaderboardStats'][i]['rating'])
+                        except Exception as e:
+                            print(e)
+                            new_ew_elo = 0
                         print(new_ew_elo)
                         p.new_ew_elo = new_ew_elo
 
