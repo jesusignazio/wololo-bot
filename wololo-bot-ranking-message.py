@@ -25,7 +25,7 @@ class PlayerWatched:
         self.new_tg_elo = new_tg_elo
         self.max_tg_elo = ""
         self.last_ew_elo = last_ew_elo
-        self.new_ew_elo = new_ew_elo
+        self.new_ew_elo = ""
         self.steam_id = steam_id
 
         self.url_relic = "https://aoe-api.reliclink.com/community/leaderboard/GetPersonalStat?title=age2&profile_names=[%22/steam/" + str(steam_id) + "%22]"
