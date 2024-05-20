@@ -181,7 +181,7 @@ class MyClient(discord.Client):
 
         print("Purge channel content")
         try:
-            await channel_to.purge(limit=2)
+            await channel_to.purge(limit=3)
         except Exception as e:
             print(e)
 
