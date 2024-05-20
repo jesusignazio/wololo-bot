@@ -72,7 +72,7 @@ def save_ids_to_pickle(ids, file_path):
 
 
 # Example usage:
-text_file_path = 'matches.txt'  # Path to your text file containing IDs
+text_file_path = 'matchess.txt'  # Path to your text file containing IDs
 pickle_file_path = 'matches.pkl'  # Path where you want to save the pickle file
 
 # Load IDs from the text file
