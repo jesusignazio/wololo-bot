@@ -106,6 +106,7 @@ class MyClient(discord.Client):
                         p.new_tg_elo = new_tg_elo
                     elif int(data['leaderboardStats'][i]['leaderboard_id']) == 27:  # EW
                         new_ew_elo = int(data['leaderboardStats'][i]['rating'])
+                        print(new_ew_elo)
                         p.new_ew_elo = new_ew_elo
 
                 # TODO get max ELO
