@@ -67,7 +67,7 @@ def load_players_from_text(file_path):
     players = []
     with open(file_path, 'r') as file:
         for line in file:
-            profile_id, discord_id, discord_name = line.strip().split(',')
+            profile_id, discord_id, discord_name = line.strip().split('&&&')
             players.append(PlayerWatched(profile_id, discord_id, discord_name))
     return players
 
