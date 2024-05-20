@@ -49,7 +49,7 @@ async def add_ranking(interaction: discord.Interaction, profile_id: typing.Optio
         if profile_id is not None and name is not None and discord_id is not None:
             with open(os.path.realpath(os.path.dirname(__file__)) + "/watched.txt", 'a') as f:
                 f.write(profile_id + "&&&" + discord_id + "&&&" + name + "&&&" + str(
-                    0) + "&&&" + str(0) + "&&&" + str(steam_id) + "\n")
+                    0) + "&&&" + str(0) + "&&&" + str(0) + "&&&" + str(steam_id) + "\n")
                 await interaction.followup.send("Añadido " + name + " al ranking.")
                 print("Añadiddo " + name + " al ranking.")
     else:
