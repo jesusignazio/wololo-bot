@@ -95,7 +95,7 @@ class MyClient(discord.Client):
             try:
                 print("Getting " + p.discord_name)
 
-                resp = requests.get(url=p.url_relic)
+                resp = requests.get(url=p.url_relic, verify=False)
                 data = resp.json()
                 for i in range(0, len(data['leaderboardStats'])):
                     if int(data['leaderboardStats'][i]['leaderboard_id']) == 3:  # RM
