@@ -239,7 +239,7 @@ class MyClient(discord.Client):
         while True:
             time.sleep(3)
             if driver is None:
-                browser = await uc.start()
+                browser = await uc.start(no_sandbox=True)
             try:
                 print("New loop")
                 matches_reported = []
