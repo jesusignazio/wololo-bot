@@ -4,10 +4,7 @@ import time
 import discord
 import os
 import sys
-from selenium import webdriver
-from selenium.webdriver.common.by import By
-from selenium.webdriver.firefox.options import Options
-from selenium.webdriver.firefox.service import Service
+import nodriver as uc
 
 TOKEN = 'MTE0NjExMDE2MDcyNTYyMjg0NQ.GGHN-q.9NiS9Agtu3JxHKpRH-rUaQ6e_4VFP5ZhOiWBG0'
 CHANNEL_ID = 1185690467501887598
@@ -242,13 +239,7 @@ class MyClient(discord.Client):
         while True:
             time.sleep(3)
             if driver is None:
-                options = Options()
-                service = Service()
-                options.add_argument("-headless")
-                driver = webdriver.Firefox(service=service, options=options)
-                driver.set_page_load_timeout(10)
-                driver.set_script_timeout(10)
-
+                browser = await uc.start()
             try:
                 print("New loop")
                 matches_reported = []
@@ -285,43 +276,42 @@ class MyClient(discord.Client):
                     print(p.url_companion)
 
                     try:
-                        driver.get(p.url_companion)
+                        driver = browser.get(p.url_companion)
                         time.sleep(7)
-                        tbody = driver.find_element(By.TAG_NAME, "tbody")
-                        matches_tr = tbody.find_elements(By.TAG_NAME, "tr")
+                        tbody = driver.select("tbody")
+                        matches_tr = tbody.find_all("tr")
 
                         for i in matches_tr:
-                            match_id = \
-                                i.find_elements(By.TAG_NAME, "td")[0].find_elements(By.TAG_NAME, "div")[0].find_element(
-                                    By.TAG_NAME,
-                                    "div").find_elements(
-                                    By.TAG_NAME, "div")[0].text
+                            match_id = i.find_all("td")[0].find_all("div")[0].find("div").find_all("div")[0].text
                             print()
                             print(match_id)
+
                             if match_id not in matches_reported:
                                 print("Not reported: " + match_id)
 
-                                map_name = \
-                                    i.find_elements(By.TAG_NAME, "td")[0].find_elements(By.TAG_NAME, "div")[0].find_element(
-                                        By.TAG_NAME, "div").find_elements(By.TAG_NAME, "div")[1].text
-                                match_type = \
-                                    i.find_elements(By.TAG_NAME, "td")[0].find_elements(By.TAG_NAME, "div")[0].find_element(
-                                        By.TAG_NAME, "div").find_elements(By.TAG_NAME, "div")[2].text
-                                match_time = \
-                                    i.find_elements(By.TAG_NAME, "td")[0].find_elements(By.TAG_NAME, "div")[0].find_element(
-                                        By.TAG_NAME, "div").find_elements(By.TAG_NAME, "div")[3].get_attribute("title")
-                                imagemap = i.find_elements(By.TAG_NAME, "td")[0].find_elements(By.TAG_NAME, "div")[
-                                    0].find_element(
-                                    By.TAG_NAME, "img").get_attribute("src")
+                                # Extract map name
+                                map_name = i.find_all("td")[0].find_all("div")[0].find("div").find_all("div")[1].text
 
+                                # Extract match type
+                                match_type = i.find_all("td")[0].find_all("div")[0].find("div").find_all("div")[2].text
+
+                                # Extract match time
+                                match_time = i.find_all("td")[0].find_all("div")[0].find("div").find_all("div")[
+                                    3].get_attribute("title")
+
+                                # Extract image map source
+                                imagemap = i.find_all("td")[0].find_all("div")[0].find("img").get_attribute("src")
+
+                                # Create a Match object
                                 match = Match(match_id, map_name, match_time, match_type, [], imagemap)
 
-                                players_team_1 = \
-                                i.find_elements(By.TAG_NAME, "td")[1].find_elements(By.XPATH, "./*")[0].find_elements(
-                                    By.XPATH, "./*")[0].find_elements(By.XPATH, "./*")[0].find_elements(By.XPATH, "./*")
-                                players_team_2 = \
-                                i.find_elements(By.TAG_NAME, "td")[1].find_elements(By.XPATH, "./*")[0].find_elements(
-                                    By.XPATH, "./*")[1].find_elements(By.XPATH, "./*")[0].find_elements(By.XPATH, "./*")
+                                # Extract players for team 1
+                                players_team_1 = i.find_all("td")[1].find_all()[0].find_all()[0].find_all()[
+                                    0].find_all()
+
+                                # Extract players for team 2
+                                players_team_2 = i.find_all("td")[1].find_all()[0].find_all()[1].find_all()[
+                                    0].find_all()
 
                                 try:
                                     p1_stats = players_team_1[0].text.split("\n")
