@@ -195,11 +195,11 @@ class MyClient(discord.Client):
         embed_tg.set_thumbnail(url="https://cdn.discordapp.com/attachments/1049283724497404004/1049284070665900043/logotipo-dark-knight-knight-esport_100659-74_1.png")
         await channel_to.send(embed=embed_tg)
 
-        print("Sending message EW")
+        """print("Sending message EW")
         embed_tg = discord.Embed(title="Ranking EW", description=message_ew, color=0x0000CD)
         embed_tg.set_thumbnail(
             url="https://cdn.discordapp.com/attachments/1049283724497404004/1049284070665900043/logotipo-dark-knight-knight-esport_100659-74_1.png")
-        await channel_to.send(embed=embed_tg)
+        await channel_to.send(embed=embed_tg)"""
 
         """Clear watched.txt file"""
         with open(os.path.realpath(os.path.dirname(__file__)) + "/watched.txt", 'w') as f:
